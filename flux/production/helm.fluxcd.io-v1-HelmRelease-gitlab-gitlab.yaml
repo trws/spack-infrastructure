@@ -1,0 +1,136 @@
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: gitlab
+  namespace: gitlab
+spec:
+  chart:
+    name: gitlab
+    repository: https://charts.gitlab.io
+    version: 4.8.8
+  releaseName: gitlab
+  values:
+    certmanager:
+      install: false
+    gitlab:
+      gitaly:
+        nodeSelector:
+          spack.io/node-pool: gitlab
+      gitlab-exporter:
+        nodeSelector:
+          spack.io/node-pool: gitlab
+      gitlab-shell:
+        nodeSelector:
+          spack.io/node-pool: gitlab
+        service:
+          type: LoadBalancer
+      ingress:
+        tls:
+          enabled: true
+      migrations:
+        nodeSelector:
+          spack.io/node-pool: gitlab
+      sidekiq:
+        image:
+          pullPolicy: IfNotPresent
+          repository: ghcr.io/scottwittenburg/gitlab-org-build-cng-gitlab-sidekiq-ee
+          tag: v13.8.8
+        nodeSelector:
+          spack.io/node-pool: gitlab
+      task-runner:
+        antiAffinityLabels:
+          matchLabels:
+            app: gitaly
+        image:
+          pullPolicy: IfNotPresent
+          repository: ghcr.io/scottwittenburg/gitlab-org-build-cng-gitlab-task-runner-ee
+          tag: v13.8.8
+        nodeSelector:
+          spack.io/node-pool: gitlab
+        replicas: 4
+      webservice:
+        image:
+          pullPolicy: IfNotPresent
+          repository: ghcr.io/scottwittenburg/gitlab-org-build-cng-gitlab-webservice-ee
+          tag: v13.8.8
+        ingress:
+          enabled: true
+          tls:
+            enabled: true
+            secretName: tls-gitlab-webservice
+        maxReplicas: 4
+        minReplicas: 2
+        nodeSelector:
+          spack.io/node-pool: gitlab
+    gitlab-runner:
+      install: false
+    global:
+      antiAffinity: hard
+      appConfig:
+        smartcard:
+          enabled: false
+      common:
+        labels: {}
+      edition: ee
+      email:
+        from: admin@gitlab.spack.io
+        reply_to: noreply@gitlab.spack.io
+      gitlab:
+        license: {}
+      grafana:
+        enabled: false
+      hosts:
+        domain: spack.io
+        gitlab:
+          name: gitlab.spack.io
+        https: true
+        minio:
+          name: minio.gitlab.spack.io
+        registry:
+          name: registry.gitlab.spack.io
+        smartcard:
+          enabled: false
+        ssh: ssh.gitlab.spack.io
+      ingress:
+        class: nginx
+        configureCertmanager: false
+      initialRootPassword: {}
+      minio:
+        enabled: true
+      operator:
+        enabled: false
+      psql:
+        connectTimeout: null
+        password: {}
+      redis:
+        password:
+          enabled: true
+      smtp:
+        address: email-smtp.us-east-1.amazonaws.com
+        enabled: true
+        password:
+          secret: smtp-password
+        port: 465
+        tls: true
+        user_name: AKIAYSCIUVA2HA4WTV6O
+    minio:
+      ingress:
+        tls:
+          secretName: tls-gitlab-minio
+      nodeSelector:
+        spack.io/node-pool: gitlab
+      persistence:
+        size: 500Gi
+    nginx-ingress:
+      enabled: false
+    nodeSelector:
+      spack.io/node-pool: gitlab
+    prometheus:
+      install: false
+    registry:
+      ingress:
+        tls:
+          secretName: tls-gitlab-registry
+      nodeSelector:
+        spack.io/node-pool: gitlab

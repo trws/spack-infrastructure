@@ -1,0 +1,30 @@
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: cert-manager
+  namespace: cert-manager
+spec:
+  chart:
+    name: cert-manager
+    repository: https://charts.jetstack.io
+    version: v1.0.2
+  releaseName: cert-manager
+  values:
+    cainjector:
+      enabled: true
+      nodeSelector:
+        spack.io/node-pool: base
+      replicaCount: 3
+    extraArgs:
+    - --enable-certificate-owner-ref=true
+    installCRDs: false
+    nodeSelector:
+      spack.io/node-pool: base
+    prometheus:
+      enabled: false
+    replicaCount: 3
+    webhook:
+      nodeSelector:
+        spack.io/node-pool: base
+      replicaCount: 3

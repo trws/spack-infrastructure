@@ -1,0 +1,103 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cdash
+    svc: web
+  name: cdash
+  namespace: cdash
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cdash
+      svc: web
+  template:
+    metadata:
+      labels:
+        app: cdash
+        svc: web
+    spec:
+      containers:
+      - args:
+        - 'eval ''CDASH_CONFIG="$(CDASH_CONFIG_TEMPLATE)"'' ; export CDASH_CONFIG
+          ; exec /bin/bash /docker-entrypoint.sh
+
+          '
+        command:
+        - /bin/bash
+        - -c
+        env:
+        - name: CDASH_ROOT_ADMIN_PASS
+          valueFrom:
+            secretKeyRef:
+              key: root-password
+              name: cdash-secrets
+        - name: CDASH_DB_HOST
+          valueFrom:
+            secretKeyRef:
+              key: db-host
+              name: cdash-secrets
+        - name: CDASH_DB_TYPE
+          valueFrom:
+            secretKeyRef:
+              key: db-type
+              name: cdash-secrets
+        - name: CDASH_DB_NAME
+          valueFrom:
+            secretKeyRef:
+              key: db-name
+              name: cdash-secrets
+        - name: CDASH_DB_LOGIN
+          valueFrom:
+            secretKeyRef:
+              key: db-login
+              name: cdash-secrets
+        - name: CDASH_DB_PORT
+          valueFrom:
+            secretKeyRef:
+              key: db-port
+              name: cdash-secrets
+        - name: CDASH_DB_PASS
+          valueFrom:
+            secretKeyRef:
+              key: db-password
+              name: cdash-secrets
+        - name: CDASH_CONFIG_TEMPLATE
+          value: '\$CDASH_DB_HOST = ''\''$CDASH_DB_HOST\'''';
+
+            \$CDASH_DB_NAME = ''\''$CDASH_DB_NAME\'''';
+
+            \$CDASH_DB_TYPE = ''\''$CDASH_DB_TYPE\'''';
+
+            \$CDASH_DB_LOGIN = ''\''$CDASH_DB_LOGIN\'''';
+
+            \$CDASH_DB_PORT = ''\''$CDASH_DB_PORT\'''';
+
+            \$CDASH_DB_PASS = ''\''$CDASH_DB_PASS\'''';
+
+            \$CDASH_DB_CONNECTION_TYPE = ''\''host\'''';
+
+            \$CDASH_BASE_URL = ''\''https://cdash.spack.io\'''';
+
+            \$CDASH_USE_HTTPS = ''\''1\'''';
+
+            \$CDASH_PRODUCTION_MODE = ''\''1\'''';
+
+            \$CDASH_AUTOREMOVE_BUILDS = ''\''1\'''';
+
+            \$CDASH_DEFAULT_PROJECT = ''\''Spack\'''';
+
+            \$CDASH_ACTIVE_PROJECT_DAYS = ''\''0\'''';
+
+            '
+        image: kitware/cdash:spack_deploy_v4
+        imagePullPolicy: IfNotPresent
+        name: cdash
+        ports:
+        - containerPort: 80
+          name: web
+      nodeSelector:
+        spack.io/node-pool: base
+      restartPolicy: Always

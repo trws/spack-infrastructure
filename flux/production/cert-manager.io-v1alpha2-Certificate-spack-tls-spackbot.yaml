@@ -1,0 +1,14 @@
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: tls-spackbot
+  namespace: spack
+spec:
+  commonName: spackbot.spack.io
+  dnsNames:
+  - spackbot.spack.io
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt
+  secretName: tls-spackbot

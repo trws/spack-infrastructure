@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: cdash
+    svc: web
+  name: cdash
+  namespace: cdash
+spec:
+  ports:
+  - name: web
+    port: 80
+    targetPort: 80
+  selector:
+    app: cdash
+    svc: web
+  type: ClusterIP

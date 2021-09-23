@@ -1,0 +1,40 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: gh-gl-sync
+  namespace: custom
+spec:
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - args:
+            - spack/spack
+            - ssh://git@ssh.gitlab.spack.io/spack/spack
+            - https://gitlab.spack.io
+            - spack/spack
+            - --pr-mirror-bucket
+            - spack-binaries-prs
+            - --main-branch
+            - develop
+            env:
+            - name: GITHUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: github-access-token
+                  name: gh-gl-sync
+            - name: GITLAB_SSH_KEY_BASE64
+              valueFrom:
+                secretKeyRef:
+                  key: gitlab-ssh-key
+                  name: gh-gl-sync
+            image: zackgalbreath/spack-ci-bridge:0.0.21
+            imagePullPolicy: IfNotPresent
+            name: sync
+          nodeSelector:
+            spack.io/node-pool: base
+          restartPolicy: Never
+          serviceAccountName: gh-gl-sync
+  schedule: '*/3 * * * *'

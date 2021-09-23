@@ -1,0 +1,50 @@
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: runner-small-arm-pub
+  namespace: gitlab
+spec:
+  chart:
+    name: gitlab-runner
+    repository: https://charts.gitlab.io
+    version: 0.25.0
+  releaseName: small-arm-pub
+  values:
+    checkInterval: 30
+    concurrent: 20
+    gitlabUrl: https://gitlab.spack.io/
+    image: gitlab/gitlab-runner:alpine-v13.8.0
+    imagePullPolicy: IfNotPresent
+    metrics:
+      enabled: true
+    nodeSelector:
+      spack.io/node-pool: base
+    rbac:
+      serviceAccountName: runner
+    runners:
+      builds:
+        cpuRequests: 401m
+      cache: {}
+      config: "[[runners]]\n  environment = [\"FF_GITLAB_REGISTRY_HELPER_IMAGE=1\"\
+        ]\n"
+      helpers:
+        image: gitlab/gitlab-runner-helper:arm-latest
+      image: busybox:1.32.0
+      imagePullPolicy: if-not-present
+      locked: false
+      namespace: pipeline
+      nodeSelector:
+        kubernetes.io/arch: arm64
+        spack.io/node-pool: glr-small-pub
+      outputLimit: 4096
+      pollTimeout: 600
+      privileged: false
+      requestConcurrency: 20
+      runUntagged: false
+      secret: gitlab-gitlab-runner-secret
+      serviceAccountName: runner
+      services: {}
+      tags: arm,aarch64,graviton,graviton2,small,public,aws,spack
+    terminationGracePeriodSeconds: 21600
+    unregisterRunners: true

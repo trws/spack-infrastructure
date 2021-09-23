@@ -1,0 +1,62 @@
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: ingress-nginx
+  namespace: ingress-nginx
+spec:
+  chart:
+    name: ingress-nginx
+    repository: https://kubernetes.github.io/ingress-nginx
+    version: 3.4.0
+  releaseName: ingress-nginx
+  values:
+    controller:
+      autoscaling:
+        enabled: true
+        maxReplicas: 4
+        minReplicas: 1
+        targetCPUUtilizationPercentage: 50
+        targetMemoryUtilizationPercentage: 50
+      containerPort:
+        http: 80
+        https: 443
+      metrics:
+        enabled: false
+        port: 10254
+        service:
+          annotations:
+            prometheus.io/port: '10254'
+            prometheus.io/scrape: 'true'
+          servicePort: 9913
+          type: ClusterIP
+        serviceMonitor:
+          enabled: true
+      minAvailable: 1
+      nodeSelector:
+        spack.io/node-pool: base
+      replicaCount: 1
+      service:
+        annotations:
+          nginx.ingress.kubernetes.io/proxy-body-size: 10m
+          service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: '3600'
+          service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
+        enableHttp: true
+        enableHttps: true
+        enabled: true
+        labels: {}
+        ports:
+          http: 80
+          https: 443
+        targetPorts:
+          http: http
+          https: https
+        type: LoadBalancer
+    defaultBackend:
+      enabled: true
+      minAvailable: 1
+      nodeSelector:
+        spack.io/node-pool: base
+      replicaCount: 3
+    tcp: {}
+    udp: {}
