@@ -1,0 +1,63 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: gitops-controller
+    svc: controller
+  name: gitops-controller
+  namespace: gitops
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitops-controller
+      svc: controller
+  template:
+    metadata:
+      labels:
+        app: gitops-controller
+        svc: controller
+    spec:
+      containers:
+      - args:
+        - --repo
+        - ssh://git@github.com/spack/spack-infrastructure
+        - --staging-branch
+        - main
+        - --production-branch
+        - production
+        - --source-dir
+        - k8s
+        - --target-branch
+        - flux
+        - --target-dir
+        - flux
+        - --interval
+        - '10'
+        - --deploy-key
+        - /key
+        - --user-email
+        - maintainers@spack.io
+        - --user-name
+        - Spack Bot
+        - --storage-dir
+        - /storage
+        image: ghcr.io/opadron/gitops:latest
+        imagePullPolicy: Always
+        name: controller
+        volumeMounts:
+        - mountPath: /storage
+          name: storage
+        - mountPath: /key
+          name: key
+          subPath: key
+      restartPolicy: Always
+      volumes:
+      - name: storage
+        persistentVolumeClaim:
+          claimName: gitops
+      - name: key
+        secret:
+          defaultMode: 384
+          secretName: gitops-secrets

@@ -48,7 +48,7 @@ spec:
           tag: v13.8.8
         nodeSelector:
           spack.io/node-pool: gitlab
-        replicas: 4
+        replicas: 8
       webservice:
         image:
           pullPolicy: IfNotPresent
@@ -59,10 +59,17 @@ spec:
           tls:
             enabled: true
             secretName: tls-gitlab-webservice
-        maxReplicas: 4
-        minReplicas: 2
+        maxReplicas: 16
+        minReplicas: 4
         nodeSelector:
           spack.io/node-pool: gitlab
+        resources:
+          limits:
+            cpu: 1500m
+            memory: 2.5G
+          requests:
+            cpu: 300m
+            memory: 1.5G
     gitlab-runner:
       install: false
     global:
