@@ -45,6 +45,6 @@ spec:
       secret: gitlab-gitlab-runner-secret
       serviceAccountName: runner
       services: {}
-      tags: arm,aarch64,graviton,graviton2,large,public,spack
+      tags: arm,aarch64,graviton,graviton2,large,public,aws,spack
     terminationGracePeriodSeconds: 21600
     unregisterRunners: true

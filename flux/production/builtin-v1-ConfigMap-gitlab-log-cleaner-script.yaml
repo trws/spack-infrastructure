@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+data:
+  script: "#! /bin/bash\nset +o history\nmc alias set gitlab https://minio.gitlab.spack.io\
+    \ \\\n    \"$ACCESS_KEY\" \"$SECRET_KEY\"\nset -o history\necho\n\nmc find gitlab/gitlab-artifacts\
+    \ --maxdepth 5 --path '*_*_*' -exec \\\n    'mc find {} --maxdepth 3 --older-than\
+    \ 30d --name job.log' \\\n| while read LOG_FILE ; do\n    mc rm \"$LOG_FILE\"\n\
+    done | tee >( wc -l > /tmp/num_files)\n\necho\necho \"Removed $( cat /tmp/num_files\
+    \ ) file(s).\"\n"
+kind: ConfigMap
+metadata:
+  name: log-cleaner-script
+  namespace: gitlab

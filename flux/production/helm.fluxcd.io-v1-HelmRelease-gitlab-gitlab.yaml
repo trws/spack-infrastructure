@@ -34,7 +34,7 @@ spec:
       sidekiq:
         image:
           pullPolicy: IfNotPresent
-          repository: ghcr.io/scottwittenburg/gitlab-org-build-cng-gitlab-sidekiq-ee
+          repository: ghcr.io/spack/gitlab-sidekiq
           tag: v13.8.8
         nodeSelector:
           spack.io/node-pool: gitlab
@@ -44,7 +44,7 @@ spec:
             app: gitaly
         image:
           pullPolicy: IfNotPresent
-          repository: ghcr.io/scottwittenburg/gitlab-org-build-cng-gitlab-task-runner-ee
+          repository: ghcr.io/spack/gitlab-task-runner
           tag: v13.8.8
         nodeSelector:
           spack.io/node-pool: gitlab
@@ -52,7 +52,7 @@ spec:
       webservice:
         image:
           pullPolicy: IfNotPresent
-          repository: ghcr.io/scottwittenburg/gitlab-org-build-cng-gitlab-webservice-ee
+          repository: ghcr.io/spack/gitlab-webservice
           tag: v13.8.8
         ingress:
           enabled: true

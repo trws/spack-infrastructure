@@ -13,6 +13,8 @@ spec:
     matchLabels:
       app: gitops-controller
       svc: controller
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -43,8 +45,7 @@ spec:
         - Spack Bot
         - --storage-dir
         - /storage
-        image: ghcr.io/opadron/gitops:latest
-        imagePullPolicy: Always
+        image: ghcr.io/spack/gitops:0.0.4
         name: controller
         volumeMounts:
         - mountPath: /storage

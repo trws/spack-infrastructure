@@ -19,6 +19,8 @@ spec:
             - spack-binaries-prs
             - --main-branch
             - develop
+            - --prereq-check
+            - style
             env:
             - name: GITHUB_TOKEN
               valueFrom:
@@ -30,7 +32,7 @@ spec:
                 secretKeyRef:
                   key: gitlab-ssh-key
                   name: gh-gl-sync
-            image: zackgalbreath/spack-ci-bridge:0.0.21
+            image: ghcr.io/spack/ci-bridge:0.0.22
             imagePullPolicy: IfNotPresent
             name: sync
           nodeSelector:

@@ -20,7 +20,7 @@ spec:
                 secretKeyRef:
                   key: gitlab-private-token
                   name: gitlab-api-scrape
-            image: zackgalbreath/gitlab-api-scrape:0.0.2
+            image: ghcr.io/spack/gitlab-api-scrape:0.0.2
             imagePullPolicy: IfNotPresent
             name: scrape
           nodeSelector:

@@ -1,0 +1,49 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: log-cleaner
+  namespace: gitlab
+spec:
+  jobTemplate:
+    metadata:
+      labels:
+        app: gitlab
+        svc: log-cleaner
+    spec:
+      template:
+        metadata:
+          labels:
+            app: gitlab
+            svc: log-cleaner
+        spec:
+          containers:
+          - command:
+            - bash
+            - /cleaner/script
+            env:
+            - name: ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: accesskey
+                  name: gitlab-minio-secret
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: secretkey
+                  name: gitlab-minio-secret
+            image: minio/mc:RELEASE.2021-09-23T05-44-03Z
+            imagePullPolicy: IfNotPresent
+            name: cleaner
+            volumeMounts:
+            - mountPath: /cleaner
+              name: cleaner
+          nodeSelector:
+            spack.io/node-pool: base
+          restartPolicy: OnFailure
+          volumes:
+          - configMap:
+              defaultMode: 448
+              name: log-cleaner-script
+            name: cleaner
+  schedule: 0 4 * * *

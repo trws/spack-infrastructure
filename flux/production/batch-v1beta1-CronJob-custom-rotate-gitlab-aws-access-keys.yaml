@@ -16,7 +16,7 @@ spec:
                 secretKeyRef:
                   key: gitlab-token
                   name: rotate-keys
-            image: zackgalbreath/spack-rotate-keys:0.0.2
+            image: ghcr.io/spack/ci-key-rotate:0.0.2
             imagePullPolicy: IfNotPresent
             name: rotate-gitlab-aws-access-keys
           nodeSelector:

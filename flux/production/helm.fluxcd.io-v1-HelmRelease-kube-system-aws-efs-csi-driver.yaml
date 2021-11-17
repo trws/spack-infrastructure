@@ -1,0 +1,21 @@
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: aws-efs-csi-driver
+  namespace: kube-system
+spec:
+  chart:
+    name: aws-efs-csi-driver
+    repository: https://kubernetes-sigs.github.io/aws-efs-csi-driver
+    version: 2.2.0
+  releaseName: aws-efs-csi-driver
+  values:
+    controller:
+      nodeSelector:
+        spack.io/node-pool: base
+      serviceAccount:
+        create: false
+        name: efs-csi-controller-sa
+    image:
+      repository: 602401143452.dkr.ecr.us-east-1.amazonaws.com/eks/aws-efs-csi-driver
