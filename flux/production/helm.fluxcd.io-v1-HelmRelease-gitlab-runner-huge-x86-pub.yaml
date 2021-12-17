@@ -24,7 +24,8 @@ spec:
       serviceAccountName: runner
     runners:
       builds:
-        cpuRequests: 2500m
+        cpuRequests: 46000m
+        memoryRequests: 94Gi
       cache: {}
       config: "[[runners]]\n  environment = [\"FF_GITLAB_REGISTRY_HELPER_IMAGE=1\"\
         ]\n"
@@ -39,7 +40,7 @@ spec:
       outputLimit: 4096
       pollTimeout: 600
       privileged: false
-      requestConcurrency: 20
+      requestConcurrency: 1
       runUntagged: false
       secret: gitlab-gitlab-runner-secret
       serviceAccountName: runner

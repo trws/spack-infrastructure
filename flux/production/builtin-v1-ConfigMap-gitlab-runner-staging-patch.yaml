@@ -3,20 +3,16 @@ apiVersion: v1
 data:
   apiVersion: helm.fluxcd.io/v1
   kind: HelmRelease
-  name: runner-small-x86-pub
+  name: runner-xlarge-x86-pub
   patch: "- op: replace\n  path: /metadata/name\n  value: runner-{ENV}\n- op: replace\n\
     \  path: /spec/releaseName\n  value: runner-{ENV}\n- op: replace\n  path: /spec/values/gitlabUrl\n\
     \  value: \"https://gitlab.{ENV}.spack.io/\"\n- op: replace\n  path: /spec/values/terminationGracePeriodSeconds\n\
     \  value: 300  # five minutes\n- op: replace\n  path: /spec/values/concurrent\n\
     \  value: 3\n- op: replace\n  path: /spec/values/checkInterval\n  value: 1\n-\
     \ op: replace\n  path: /spec/values/runners/requestConcurrency\n  value: 3\n-\
-    \ op: replace\n  path: /spec/values/runners/tags\n  value: \"x86_64,avx,{ENV},public,aws,spack\"\
+    \ op: replace\n  path: /spec/values/runners/tags\n  value: \"x86_64,avx,avx2,avx512,{ENV},public,aws,spack\"\
     \n- op: replace\n  path: /spec/values/runners/secret\n  value: gitlab-{ENV}-gitlab-runner-secret\n\
-    - op: replace\n  path: /spec/values/runners/namespace\n  value: gitlab\n- op:\
-    \ replace\n  path: /spec/values/runners/pollTimeout\n  value: 30\n- op: replace\n\
-    \  path: /spec/values/runners/nodeSelector/spack.io~1node-pool\n  value: base\n\
-    - op: remove\n  path: /spec/values/runners/builds/cpuRequests\n- op: remove\n\
-    \  path: /spec/values/runners/nodeSelector/kubernetes.io~1arch\n"
+    - op: replace\n  path: /spec/values/runners/namespace\n  value: gitlab\n"
 kind: ConfigMap
 metadata:
   annotations:

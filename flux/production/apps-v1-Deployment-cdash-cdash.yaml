@@ -87,9 +87,9 @@ spec:
 
             \$CDASH_AUTOREMOVE_BUILDS = ''\''1\'''';
 
-            \$CDASH_DEFAULT_PROJECT = ''\''Spack\'''';
-
             \$CDASH_ACTIVE_PROJECT_DAYS = ''\''0\'''';
+
+            \$CDASH_ASYNCHRONOUS_SUBMISSION = ''\''1\'''';
 
             '
         image: kitware/cdash:spack_deploy_v4

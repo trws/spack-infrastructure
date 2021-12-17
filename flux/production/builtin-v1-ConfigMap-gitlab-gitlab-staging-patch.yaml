@@ -21,15 +21,11 @@ data:
     \  value: tls-gitlab-{ENV}-registry\n- op: add\n  path: /spec/values\n  value:\n\
     \    grafana:\n      enabled: false\n- op: replace\n  path: /spec/values/gitlab/webservice/ingress/tls/secretName\n\
     \  value: tls-gitlab-{ENV}-webservice\n- op: replace\n  path: /spec/values/gitlab/webservice/image/tag\n\
-    \  value: v14.4.1\n- op: remove\n  path: /spec/values/gitlab/webservice/image/tag\n\
-    - op: remove\n  path: /spec/values/gitlab/webservice/image/repository\n- op: replace\n\
-    \  path: /spec/values/gitlab/webservice/minReplicas\n  value: 1\n- op: replace\n\
-    \  path: /spec/values/gitlab/webservice/maxReplicas\n  value: 3\n- op: remove\n\
-    \  path: /spec/values/gitlab/gitlab-shell/service\n- op: replace\n  path: /spec/values/gitlab/sidekiq/image/tag\n\
-    \  value: v14.4.1\n- op: remove\n  path: /spec/values/gitlab/sidekiq/image/tag\n\
-    - op: remove\n  path: /spec/values/gitlab/sidekiq/image/repository\n- op: replace\n\
-    \  path: /spec/values/gitlab/task-runner/image/tag\n  value: v14.4.1\n- op: remove\n\
-    \  path: /spec/values/gitlab/task-runner/image/tag\n- op: remove\n  path: /spec/values/gitlab/task-runner/image/repository\n\
+    \  value: v14.4.1\n- op: replace\n  path: /spec/values/gitlab/webservice/minReplicas\n\
+    \  value: 1\n- op: replace\n  path: /spec/values/gitlab/webservice/maxReplicas\n\
+    \  value: 3\n- op: remove\n  path: /spec/values/gitlab/gitlab-shell/service\n\
+    - op: replace\n  path: /spec/values/gitlab/sidekiq/image/tag\n  value: v14.4.1\n\
+    - op: replace\n  path: /spec/values/gitlab/task-runner/image/tag\n  value: v14.4.1\n\
     - op: replace\n  path: /spec/values/gitlab/task-runner/replicas\n  value: 3\n"
 kind: ConfigMap
 metadata:
