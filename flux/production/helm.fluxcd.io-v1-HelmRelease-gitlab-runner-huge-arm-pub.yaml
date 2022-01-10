@@ -12,7 +12,7 @@ spec:
   releaseName: huge-arm-pub
   values:
     checkInterval: 30
-    concurrent: 20
+    concurrent: 1
     gitlabUrl: https://gitlab.spack.io/
     image: gitlab/gitlab-runner:alpine-v13.8.0
     imagePullPolicy: IfNotPresent

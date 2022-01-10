@@ -12,7 +12,7 @@ spec:
   releaseName: medium-x86-pub
   values:
     checkInterval: 30
-    concurrent: 20
+    concurrent: 50
     gitlabUrl: https://gitlab.spack.io/
     image: gitlab/gitlab-runner:alpine-v13.8.0
     imagePullPolicy: IfNotPresent
