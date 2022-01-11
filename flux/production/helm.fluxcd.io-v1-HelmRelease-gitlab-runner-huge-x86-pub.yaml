@@ -25,7 +25,7 @@ spec:
     runners:
       builds:
         cpuRequests: 46000m
-        memoryRequests: 94Gi
+        memoryRequests: 88Gi
       cache: {}
       config: "[[runners]]\n  environment = [\"FF_GITLAB_REGISTRY_HELPER_IMAGE=1\"\
         ]\n"
