@@ -24,8 +24,7 @@ spec:
       serviceAccountName: runner
     runners:
       builds:
-        cpuRequests: 4000m
-        memoryRequests: 7689557Ki
+        cpuRequests: 1050m
       cache: {}
       config: "[[runners]]\n  environment = [\"FF_GITLAB_REGISTRY_HELPER_IMAGE=1\"\
         ]\n"
@@ -36,15 +35,15 @@ spec:
       namespace: pipeline
       nodeSelector:
         kubernetes.io/arch: amd64
-        spack.io/node-pool: glr-huge-pub
+        spack.io/node-pool: glr-medium-pub
       outputLimit: 4096
       pollTimeout: 600
       privileged: false
-      requestConcurrency: 50
+      requestConcurrency: 20
       runUntagged: false
       secret: gitlab-gitlab-runner-secret
       serviceAccountName: runner
       services: {}
-      tags: x86_64,avx,avx2,avx512,medium,public,aws,spack
+      tags: x86_64,avx,medium,public,aws,spack
     terminationGracePeriodSeconds: 21600
     unregisterRunners: true

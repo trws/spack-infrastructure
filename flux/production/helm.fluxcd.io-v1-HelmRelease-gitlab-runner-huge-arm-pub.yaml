@@ -41,7 +41,7 @@ spec:
       outputLimit: 4096
       pollTimeout: 600
       privileged: false
-      requestConcurrency: 1
+      requestConcurrency: 20
       runUntagged: false
       secret: gitlab-gitlab-runner-secret
       serviceAccountName: runner
