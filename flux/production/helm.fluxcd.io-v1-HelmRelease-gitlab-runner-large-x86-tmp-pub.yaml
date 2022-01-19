@@ -2,18 +2,18 @@
 apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
-  name: runner-staging
+  name: runner-large-x86-tmp-pub
   namespace: gitlab
 spec:
   chart:
     name: gitlab-runner
     repository: https://charts.gitlab.io
     version: 0.25.0
-  releaseName: runner-staging
+  releaseName: large-x86-tmp-pub
   values:
-    checkInterval: 1
-    concurrent: 3
-    gitlabUrl: https://gitlab.staging.spack.io/
+    checkInterval: 30
+    concurrent: 10
+    gitlabUrl: https://gitlab.spack.io/
     image: gitlab/gitlab-runner:alpine-v13.8.0
     imagePullPolicy: IfNotPresent
     metrics:
@@ -24,8 +24,8 @@ spec:
       serviceAccountName: runner
     runners:
       builds:
-        cpuRequests: 16000m
-        memoryRequests: 32Gi
+        cpuRequests: 8000m
+        memoryRequests: 15379114Ki
       cache: {}
       config: "[[runners]]\n  environment = [\"FF_GITLAB_REGISTRY_HELPER_IMAGE=1\"\
         ]\n"
@@ -33,18 +33,18 @@ spec:
       image: busybox:1.32.0
       imagePullPolicy: if-not-present
       locked: false
-      namespace: gitlab
+      namespace: pipeline
       nodeSelector:
         kubernetes.io/arch: amd64
-        spack.io/node-pool: glr-huge-pub
+        spack.io/node-pool: glr-huge-tmp-pub
       outputLimit: 4096
       pollTimeout: 600
       privileged: false
-      requestConcurrency: 3
+      requestConcurrency: 10
       runUntagged: false
-      secret: gitlab-staging-gitlab-runner-secret
+      secret: gitlab-gitlab-runner-secret
       serviceAccountName: runner
       services: {}
-      tags: x86_64,avx,avx2,avx512,staging,public,aws,spack
-    terminationGracePeriodSeconds: 300
+      tags: x86_64,avx,avx2,avx512,large,public,aws,spack
+    terminationGracePeriodSeconds: 21600
     unregisterRunners: true
