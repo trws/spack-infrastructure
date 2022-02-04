@@ -2,12 +2,12 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: gitlab-staging-minio
-  namespace: gitlab
+  name: alertmanager
+  namespace: monitoring
 spec:
   dnsNames:
-  - minio.gitlab.staging.spack.io
+  - alertmanager.spack.io
   issuerRef:
     kind: ClusterIssuer
     name: letsencrypt
-  secretName: tls-gitlab-staging-minio
+  secretName: tls-alertmanager-webservice

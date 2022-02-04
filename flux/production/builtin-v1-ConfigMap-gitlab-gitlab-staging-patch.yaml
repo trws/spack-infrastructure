@@ -5,8 +5,7 @@ data:
   kind: HelmRelease
   name: gitlab
   patch: "- op: replace\n  path: /metadata/name\n  value: gitlab-{ENV}\n- op: replace\n\
-    \  path: /spec/releaseName\n  value: gitlab-{ENV}\n- op: replace\n  path: /spec/chart/version\n\
-    \  value: 5.4.1  # gitlab@14.4.1\n- op: replace\n  path: /spec/values/global/hosts/domain\n\
+    \  path: /spec/releaseName\n  value: gitlab-{ENV}\n- op: replace\n  path: /spec/values/global/hosts/domain\n\
     \  value: \"{ENV}.spack.io\"\n- op: replace\n  path: /spec/values/global/hosts/gitlab/name\n\
     \  value: gitlab.{ENV}.spack.io\n- op: replace\n  path: /spec/values/global/hosts/minio/name\n\
     \  value: minio.gitlab.{ENV}.spack.io\n- op: replace\n  path: /spec/values/global/hosts/registry/name\n\
@@ -20,13 +19,9 @@ data:
     \  value: 10Gi\n- op: replace\n  path: /spec/values/registry/ingress/tls/secretName\n\
     \  value: tls-gitlab-{ENV}-registry\n- op: add\n  path: /spec/values\n  value:\n\
     \    grafana:\n      enabled: false\n- op: replace\n  path: /spec/values/gitlab/webservice/ingress/tls/secretName\n\
-    \  value: tls-gitlab-{ENV}-webservice\n- op: replace\n  path: /spec/values/gitlab/webservice/image/tag\n\
-    \  value: v14.4.1\n- op: replace\n  path: /spec/values/gitlab/webservice/minReplicas\n\
+    \  value: tls-gitlab-{ENV}-webservice\n- op: replace\n  path: /spec/values/gitlab/webservice/minReplicas\n\
     \  value: 1\n- op: replace\n  path: /spec/values/gitlab/webservice/maxReplicas\n\
-    \  value: 3\n- op: remove\n  path: /spec/values/gitlab/gitlab-shell/service\n\
-    - op: replace\n  path: /spec/values/gitlab/sidekiq/image/tag\n  value: v14.4.1\n\
-    - op: replace\n  path: /spec/values/gitlab/task-runner/image/tag\n  value: v14.4.1\n\
-    - op: replace\n  path: /spec/values/gitlab/task-runner/replicas\n  value: 3\n"
+    \  value: 3\n- op: remove\n  path: /spec/values/gitlab/gitlab-shell/service\n"
 kind: ConfigMap
 metadata:
   annotations:

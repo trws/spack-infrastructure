@@ -1,0 +1,39 @@
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: kube-prometheus-stack
+  namespace: monitoring
+spec:
+  chart:
+    name: kube-prometheus-stack
+    repository: https://prometheus-community.github.io/helm-charts
+    version: 19.2.2
+  releaseName: kube-prometheus-stack
+  values:
+    alertmanager:
+      alertmanagerSpec:
+        alertmanagerConfigSelector:
+          matchLabels:
+            alertmanagerConfig: spack
+      ingress:
+        enabled: false
+    grafana:
+      ingress:
+        enabled: false
+    namespaceOverride: monitoring
+    prometheus:
+      ingress:
+        enabled: false
+      prometheusSpec:
+        nodeSelector:
+          spack.io/node-pool: beefy
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              accessModes:
+              - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 200Gi
+              storageClassName: gp2

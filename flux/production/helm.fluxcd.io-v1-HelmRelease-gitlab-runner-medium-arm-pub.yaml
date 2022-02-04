@@ -8,13 +8,13 @@ spec:
   chart:
     name: gitlab-runner
     repository: https://charts.gitlab.io
-    version: 0.25.0
+    version: 0.37.1
   releaseName: medium-arm-pub
   values:
     checkInterval: 30
     concurrent: 50
     gitlabUrl: https://gitlab.spack.io/
-    image: gitlab/gitlab-runner:alpine-v13.8.0
+    image: gitlab/gitlab-runner:alpine-v14.7.0
     imagePullPolicy: IfNotPresent
     metrics:
       enabled: true

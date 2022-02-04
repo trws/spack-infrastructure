@@ -8,7 +8,7 @@ spec:
   chart:
     name: gitlab
     repository: https://charts.gitlab.io
-    version: 4.8.8
+    version: 5.6.3
   releaseName: gitlab
   values:
     certmanager:
@@ -35,17 +35,17 @@ spec:
         image:
           pullPolicy: IfNotPresent
           repository: ghcr.io/spack/gitlab-sidekiq
-          tag: v13.8.8
+          tag: v14.6.3
         nodeSelector:
           spack.io/node-pool: gitlab
-      task-runner:
+      toolbox:
         antiAffinityLabels:
           matchLabels:
             app: gitaly
         image:
           pullPolicy: IfNotPresent
-          repository: ghcr.io/spack/gitlab-task-runner
-          tag: v13.8.8
+          repository: ghcr.io/spack/gitlab-toolbox
+          tag: v14.6.3
         nodeSelector:
           spack.io/node-pool: gitlab
         replicas: 8
@@ -53,7 +53,7 @@ spec:
         image:
           pullPolicy: IfNotPresent
           repository: ghcr.io/spack/gitlab-webservice
-          tag: v13.8.8
+          tag: v14.6.3
         ingress:
           enabled: true
           tls:
@@ -133,6 +133,10 @@ spec:
       enabled: false
     nodeSelector:
       spack.io/node-pool: gitlab
+    postgresql:
+      master:
+        nodeSelector:
+          spack.io/node-pool: gitlab
     prometheus:
       install: false
     registry:

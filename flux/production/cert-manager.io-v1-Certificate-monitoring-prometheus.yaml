@@ -2,12 +2,12 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: gitlab-staging-webservice
-  namespace: gitlab
+  name: prometheus
+  namespace: monitoring
 spec:
   dnsNames:
-  - gitlab.staging.spack.io
+  - prometheus.spack.io
   issuerRef:
     kind: ClusterIssuer
     name: letsencrypt
-  secretName: tls-gitlab-staging-webservice
+  secretName: tls-prometheus-webservice
