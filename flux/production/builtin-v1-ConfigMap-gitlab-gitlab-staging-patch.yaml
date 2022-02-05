@@ -21,7 +21,8 @@ data:
     \    grafana:\n      enabled: false\n- op: replace\n  path: /spec/values/gitlab/webservice/ingress/tls/secretName\n\
     \  value: tls-gitlab-{ENV}-webservice\n- op: replace\n  path: /spec/values/gitlab/webservice/minReplicas\n\
     \  value: 1\n- op: replace\n  path: /spec/values/gitlab/webservice/maxReplicas\n\
-    \  value: 3\n- op: remove\n  path: /spec/values/gitlab/gitlab-shell/service\n"
+    \  value: 3\n- op: remove\n  path: /spec/values/gitlab/gitlab-shell/service\n\
+    - op: remove\n  path: /spec/values/postgresql/persistence\n"
 kind: ConfigMap
 metadata:
   annotations:
