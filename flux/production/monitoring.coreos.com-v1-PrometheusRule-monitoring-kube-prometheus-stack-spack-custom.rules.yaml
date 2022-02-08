@@ -1,0 +1,19 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    app: kube-prometheus-stack
+    release: kube-prometheus-stack
+  name: kube-prometheus-stack-spack-custom.rules
+  namespace: monitoring
+spec:
+  groups:
+  - name: spack-custom.rules
+    rules:
+    - expr: "count by(name, pod, node, namespace) (\n  irate(container_cpu_usage_seconds_total{namespace=\"\
+        pipeline\", container=\"build\"}[3m]) == 0 and on(pod, container)\n  delta(container_memory_usage_bytes{namespace=\"\
+        pipeline\", container=\"build\"}[3m]) == 0 and on (pod)\n  irate(container_network_receive_bytes_total{namespace=\"\
+        pipeline\"}[3m]) == 0 and on (pod)\n  irate(container_network_transmit_bytes_total{namespace=\"\
+        pipeline\"}[3m]) == 0\n)"
+      record: node_namespace_pod_name:pipeline_stuck_pods_info

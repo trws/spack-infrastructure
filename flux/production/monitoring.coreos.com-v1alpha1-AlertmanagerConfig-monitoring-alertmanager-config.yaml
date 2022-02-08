@@ -14,17 +14,22 @@ spec:
         key: webhook
         name: slack-webhook-alertmanager
       channel: '#monitoring-alerts'
-      sendResolved: true
-      text: "{{ range .Alerts }}\n    *Alert:* {{ .Annotations.summary }} - `{{ .Labels.severity\
-        \ }}`\n    *Description:* {{ .Annotations.description }}\n    *Graph:* <{{\
-        \ .GeneratorURL }}|:chart_with_upwards_trend:> *Runbook:* <{{ .Annotations.runbook\
-        \ }}|:spiral_note_pad:>\n    *Details:*\n        {{ range .Labels.SortedPairs\
-        \ }} \u2022 *{{ .Name }}:* `{{ .Value }}`\n        {{ end }}\n{{ end }}"
-      title: '[{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing
-        | len }}{{ end }}] Monitoring Event Notification'
+      iconEmoji: ':warning:'
+      text: '{{ .CommonAnnotations.description }}
+
+        {{ range .Alerts }}
+
+        *{{.Labels.alertname}}* ({{ .Fingerprint }}): <{{ .GeneratorURL }}|:chart_with_upwards_trend:>
+
+        {{.Annotations.description}}
+
+
+        {{ end }}'
+      title: '[{{ .CommonLabels.severity }}] {{ .GroupLabels.alertname }} ({{ .Alerts.Firing
+        | len }}) - {{ .CommonAnnotations.summary }}'
   route:
     groupBy:
-    - job
+    - alertname
     groupInterval: 5m
     groupWait: 30s
     receiver: slack

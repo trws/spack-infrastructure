@@ -8,7 +8,7 @@ spec:
   chart:
     name: kube-prometheus-stack
     repository: https://prometheus-community.github.io/helm-charts
-    version: 19.2.2
+    version: 32.0.2
   releaseName: kube-prometheus-stack
   values:
     alertmanager:
@@ -16,8 +16,13 @@ spec:
         alertmanagerConfigSelector:
           matchLabels:
             alertmanagerConfig: spack
+        externalUrl: https://alertmanager.spack.io
       ingress:
         enabled: false
+    defaultRules:
+      additionalRuleLabels:
+        namespace: monitoring
+        source_namespace: '{{ $labels.namespace }}'
     grafana:
       ingress:
         enabled: false
@@ -26,6 +31,7 @@ spec:
       ingress:
         enabled: false
       prometheusSpec:
+        externalUrl: https://prometheus.spack.io
         nodeSelector:
           spack.io/node-pool: beefy
         storageSpec:
