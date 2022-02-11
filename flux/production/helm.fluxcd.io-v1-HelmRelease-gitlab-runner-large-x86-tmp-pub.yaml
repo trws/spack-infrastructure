@@ -10,7 +10,7 @@ spec:
   chart:
     name: gitlab-runner
     repository: https://charts.gitlab.io
-    version: 0.37.1
+    version: 0.37.2
   releaseName: large-x86-tmp-pub
   values:
     checkInterval: 30

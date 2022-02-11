@@ -5,7 +5,7 @@ data:
   kind: HelmRelease
   name: runner-xlarge-x86-pub
   patch: "- op: replace\n  path: /metadata/name\n  value: runner-{ENV}\n- op: replace\n\
-    \  path: /spec/chart/version\n  value: \"0.37.1\"  # bleeding edge\n- op: replace\n\
+    \  path: /spec/chart/version\n  value: \"0.37.2\"  # bleeding edge\n- op: replace\n\
     \  path: /spec/releaseName\n  value: runner-{ENV}\n- op: replace\n  path: /spec/values/gitlabUrl\n\
     \  value: \"https://gitlab.{ENV}.spack.io/\"\n- op: replace\n  path: /spec/values/terminationGracePeriodSeconds\n\
     \  value: 300  # five minutes\n- op: replace\n  path: /spec/values/concurrent\n\
