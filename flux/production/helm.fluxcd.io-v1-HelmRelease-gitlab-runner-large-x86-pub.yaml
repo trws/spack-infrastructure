@@ -12,7 +12,7 @@ spec:
   releaseName: large-x86-pub
   values:
     checkInterval: 30
-    concurrent: 100
+    concurrent: 20
     gitlabUrl: https://gitlab.spack.io/
     image: gitlab/gitlab-runner:alpine-v14.7.0
     imagePullPolicy: IfNotPresent
@@ -23,26 +23,19 @@ spec:
     rbac:
       serviceAccountName: runner
     runners:
-      builds:
-        cpuRequests: 1500m
       cache: {}
-      config: "[[runners]]\n  environment = [\"FF_GITLAB_REGISTRY_HELPER_IMAGE=1\"\
-        ]\n"
+      config: "[[runners]]\n  requestConcurrency =  20\n  output_limit = 4096\n  environment\
+        \ = [\"FF_GITLAB_REGISTRY_HELPER_IMAGE=1\"]\n  [runners.kubernetes]\n    privileged\
+        \ = false\n    cpu_request = \"1500m\"\n    namespace = \"pipeline\"\n   \
+        \ pollTimeout = 600  # ten minutes\n    service_account = \"runner\"\n   \
+        \ [runners.kubernetes.node_selector]\n      \"kubernetes.io/arch\" = \"amd64\"\
+        \n      \"spack.io/node-pool\" = \"glr-large-pub\"\n"
       helpers: {}
       image: busybox:1.32.0
       imagePullPolicy: if-not-present
       locked: false
-      namespace: pipeline
-      nodeSelector:
-        kubernetes.io/arch: amd64
-        spack.io/node-pool: glr-large-pub
-      outputLimit: 4096
-      pollTimeout: 600
-      privileged: false
-      requestConcurrency: 20
       runUntagged: false
       secret: gitlab-gitlab-runner-secret
-      serviceAccountName: runner
       services: {}
       tags: x86_64,avx,avx2,avx512,large,public,aws,spack
     terminationGracePeriodSeconds: 21600

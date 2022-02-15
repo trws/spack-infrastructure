@@ -10,10 +10,15 @@ data:
     \  value: \"https://gitlab.{ENV}.spack.io/\"\n- op: replace\n  path: /spec/values/terminationGracePeriodSeconds\n\
     \  value: 300  # five minutes\n- op: replace\n  path: /spec/values/concurrent\n\
     \  value: 3\n- op: replace\n  path: /spec/values/checkInterval\n  value: 1\n-\
-    \ op: replace\n  path: /spec/values/runners/requestConcurrency\n  value: 3\n-\
     \ op: replace\n  path: /spec/values/runners/tags\n  value: \"x86_64,avx,avx2,avx512,{ENV},public,aws,spack\"\
     \n- op: replace\n  path: /spec/values/runners/secret\n  value: gitlab-{ENV}-gitlab-runner-secret\n\
-    - op: replace\n  path: /spec/values/runners/namespace\n  value: gitlab\n"
+    - op: replace\n  path: /spec/values/runners/config\n  value: |\n      [[runners]]\n\
+    \      requestConcurrency =  3\n      output_limit = 4096\n      environment =\
+    \ [\"FF_GITLAB_REGISTRY_HELPER_IMAGE=1\"]\n      [runners.kubernetes]\n      \
+    \  privileged = false\n        cpu_request = \"9000m\"\n        namespace = \"\
+    gitlab\"\n        pollTimeout = 600  # ten minutes\n        service_account =\
+    \ \"runner\"\n        [runners.kubernetes.node_selector]\n          \"kubernetes.io/arch\"\
+    \ = \"amd64\"\n          \"spack.io/node-pool\" = \"glr-xlarge-pub\"\n"
 kind: ConfigMap
 metadata:
   annotations:

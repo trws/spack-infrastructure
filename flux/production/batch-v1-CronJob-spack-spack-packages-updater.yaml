@@ -1,20 +1,20 @@
 ---
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: spack-io-updater
+  name: spack-packages-updater
   namespace: spack
 spec:
   jobTemplate:
     metadata:
       labels:
-        app: spack-io
+        app: spack-packages
         svc: updater
     spec:
       template:
         metadata:
           labels:
-            app: spack-io
+            app: spack-packages
             svc: updater
         spec:
           containers:
@@ -29,10 +29,10 @@ spec:
           nodeSelector:
             spack.io/node-pool: base
           restartPolicy: OnFailure
-          serviceAccountName: spack-io-updater
+          serviceAccountName: spack-packages-updater
           volumes:
           - configMap:
               defaultMode: 448
-              name: spack-io-updater
+              name: spack-packages-updater
             name: update
   schedule: 0 */6 * * *

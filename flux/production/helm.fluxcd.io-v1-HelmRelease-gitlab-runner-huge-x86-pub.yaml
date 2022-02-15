@@ -23,24 +23,17 @@ spec:
     rbac:
       serviceAccountName: runner
     runners:
-      builds:
-        cpuRequests: 46000m
-        memoryRequests: 88Gi
       cache: {}
-      config: "[[runners]]\n  environment = [\"FF_GITLAB_REGISTRY_HELPER_IMAGE=1\"\
-        ]\n"
+      config: "[[runners]]\n  requestConcurrency =  20\n  output_limit = 4096\n  environment\
+        \ = [\"FF_GITLAB_REGISTRY_HELPER_IMAGE=1\"]\n  [runners.kubernetes]\n    privileged\
+        \ = false\n    cpu_request = \"46000m\"\n    memory_request = \"88Gi\"\n \
+        \   namespace = \"pipeline\"\n    pollTimeout = 600  # ten minutes\n    service_account\
+        \ = \"runner\"\n    [runners.kubernetes.node_selector]\n      \"kubernetes.io/arch\"\
+        \ = \"amd64\"\n      \"spack.io/node-pool\" = \"glr-huge-pub\"\n"
       helpers: {}
       image: busybox:1.32.0
       imagePullPolicy: if-not-present
       locked: false
-      namespace: pipeline
-      nodeSelector:
-        kubernetes.io/arch: amd64
-        spack.io/node-pool: glr-huge-pub
-      outputLimit: 4096
-      pollTimeout: 600
-      privileged: false
-      requestConcurrency: 20
       runUntagged: false
       secret: gitlab-gitlab-runner-secret
       serviceAccountName: runner

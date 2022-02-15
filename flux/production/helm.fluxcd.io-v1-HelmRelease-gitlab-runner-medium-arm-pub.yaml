@@ -12,7 +12,7 @@ spec:
   releaseName: medium-arm-pub
   values:
     checkInterval: 30
-    concurrent: 50
+    concurrent: 20
     gitlabUrl: https://gitlab.spack.io/
     image: gitlab/gitlab-runner:alpine-v14.7.0
     imagePullPolicy: IfNotPresent
@@ -23,27 +23,19 @@ spec:
     rbac:
       serviceAccountName: runner
     runners:
-      builds:
-        cpuRequests: 1050m
       cache: {}
-      config: "[[runners]]\n  environment = [\"FF_GITLAB_REGISTRY_HELPER_IMAGE=1\"\
-        ]\n"
-      helpers:
-        image: gitlab/gitlab-runner-helper:arm-latest
+      config: "[[runners]]\n  requestConcurrency =  20\n  output_limit = 4096\n  environment\
+        \ = [\"FF_GITLAB_REGISTRY_HELPER_IMAGE=1\"]\n  [runners.kubernetes]\n    helper_image\
+        \ = \"gitlab/gitlab-runner-helper:arm-latest\"\n    privileged = false\n \
+        \   cpu_request = \"1050m\"\n    namespace = \"pipeline\"\n    pollTimeout\
+        \ = 600  # ten minutes\n    service_account = \"runner\"\n    [runners.kubernetes.node_selector]\n\
+        \      \"kubernetes.io/arch\" = \"arm64\"\n      \"spack.io/node-pool\" =\
+        \ \"glr-medium-pub\"\n"
       image: busybox:1.32.0
       imagePullPolicy: if-not-present
       locked: false
-      namespace: pipeline
-      nodeSelector:
-        kubernetes.io/arch: arm64
-        spack.io/node-pool: glr-medium-pub
-      outputLimit: 4096
-      pollTimeout: 600
-      privileged: false
-      requestConcurrency: 20
       runUntagged: false
       secret: gitlab-gitlab-runner-secret
-      serviceAccountName: runner
       services: {}
       tags: arm,aarch64,graviton,graviton2,medium,public,aws,spack
     terminationGracePeriodSeconds: 21600
