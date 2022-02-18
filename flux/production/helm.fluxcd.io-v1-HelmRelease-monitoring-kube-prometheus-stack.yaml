@@ -26,6 +26,9 @@ spec:
     grafana:
       ingress:
         enabled: false
+    kube-state-metrics:
+      metricLabelsAllowlist:
+      - pods=[metrics/*]
     namespaceOverride: monitoring
     prometheus:
       ingress:

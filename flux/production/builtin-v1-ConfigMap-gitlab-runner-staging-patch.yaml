@@ -13,11 +13,22 @@ data:
     \ op: replace\n  path: /spec/values/runners/tags\n  value: \"x86_64,avx,avx2,avx512,{ENV},public,aws,spack\"\
     \n- op: replace\n  path: /spec/values/runners/secret\n  value: gitlab-{ENV}-gitlab-runner-secret\n\
     - op: replace\n  path: /spec/values/runners/config\n  value: |\n      [[runners]]\n\
-    \      requestConcurrency =  3\n      output_limit = 4096\n      environment =\
-    \ [\"FF_GITLAB_REGISTRY_HELPER_IMAGE=1\"]\n      [runners.kubernetes]\n      \
-    \  privileged = false\n        cpu_request = \"9000m\"\n        namespace = \"\
-    gitlab\"\n        pollTimeout = 600  # ten minutes\n        service_account =\
-    \ \"runner\"\n        [runners.kubernetes.node_selector]\n          \"kubernetes.io/arch\"\
+    \      output_limit = 4096\n      environment = [\"FF_GITLAB_REGISTRY_HELPER_IMAGE=1\"\
+    ]\n      [runners.kubernetes]\n        privileged = false\n        cpu_request\
+    \ = \"9000m\"\n        namespace = \"gitlab\"\n        poll_timeout = 600  # ten\
+    \ minutes\n        service_account = \"runner\"\n        [runners.kubernetes.pod_annotations]\n\
+    \          \"gitlab-ci/ci_pipeline_url\" = \"$CI_PIPELINE_URL\"\n          \"\
+    gitlab-ci/ci_job_url\" = \"$CI_JOB_URL\"\n          \"gitlab-ci/ci_project_url\"\
+    \ = \"$CI_PROJECT_URL\"\n          \"gitlab-ci/ci_job_id\" = \"$CI_JOB_ID\"\n\
+    \          \"gitlab-ci/ci_runner_description\" = \"$CI_RUNNER_DESCRIPTION\"\n\
+    \        [runners.kubernetes.pod_labels]\n          \"gitlab-ci/ci_pipeline_id\"\
+    \ = \"$CI_PIPELINE_ID\"\n          \"gitlab-ci/ci_project_namespace\" = \"$CI_PROJECT_NAMESPACE\"\
+    \n          \"gitlab-ci/ci_project_name\" = \"$CI_PROJECT_NAME\"\n          \"\
+    gitlab-ci/ci_job_stage\" = \"$CI_JOB_STAGE\"\n          \"gitlab-ci/ci_commit_ref_name\"\
+    \ = \"$CI_COMMIT_REF_NAME\"\n          \"gitlab-ci/spack_ci_stack_name\" = \"\
+    $SPACK_CI_STACK_NAME\"\n          \"gitlab-ci/spack_job_spec_pkg_name\" = \"$SPACK_JOB_SPEC_PKG_NAME\"\
+    \n          \"gitlab-ci/spack_spec_needs_rebuild\" = \"$SPACK_SPEC_NEEDS_REBUILD\"\
+    \n        [runners.kubernetes.node_selector]\n          \"kubernetes.io/arch\"\
     \ = \"amd64\"\n          \"spack.io/node-pool\" = \"glr-xlarge-pub\"\n"
 kind: ConfigMap
 metadata:
