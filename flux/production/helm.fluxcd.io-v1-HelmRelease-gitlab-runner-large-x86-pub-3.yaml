@@ -2,14 +2,14 @@
 apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
-  name: runner-large-x86-pub
+  name: runner-large-x86-pub-3
   namespace: gitlab
 spec:
   chart:
     name: gitlab-runner
     repository: https://charts.gitlab.io
     version: 0.37.2
-  releaseName: large-x86-pub
+  releaseName: large-x86-pub-3
   values:
     checkInterval: 30
     concurrent: 20
