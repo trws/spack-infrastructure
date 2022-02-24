@@ -28,7 +28,7 @@ spec:
         enabled: false
     kube-state-metrics:
       metricLabelsAllowlist:
-      - pods=[metrics/*]
+      - pods=[metrics/gitlab_ci_commit_ref_name,metrics/gitlab_ci_job_stage,metrics/gitlab_ci_pipeline_id,metrics/gitlab_ci_project_name,metrics/gitlab_ci_project_namespace,metrics/spack_ci_stack_name,metrics/spack_job_spec_pkg_name,metrics/spack_spec_needs_rebuild]
     namespaceOverride: monitoring
     prometheus:
       ingress:
