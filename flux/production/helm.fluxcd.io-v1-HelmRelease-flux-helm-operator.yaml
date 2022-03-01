@@ -38,5 +38,5 @@ spec:
     helm:
       versions: v3
     nodeSelector:
-      spack.io/node-pool: base
+      spack.io/node-pool: beefy
     workers: 4
