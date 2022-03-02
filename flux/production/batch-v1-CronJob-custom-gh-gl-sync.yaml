@@ -33,11 +33,11 @@ spec:
                 secretKeyRef:
                   key: gitlab-ssh-key
                   name: gh-gl-sync
-            image: ghcr.io/spack/ci-bridge:0.0.24
+            image: ghcr.io/spack/ci-bridge:0.0.25
             imagePullPolicy: IfNotPresent
             name: sync
           nodeSelector:
             spack.io/node-pool: base
           restartPolicy: Never
           serviceAccountName: gh-gl-sync
-  schedule: '*/3 * * * *'
+  schedule: '*/4 * * * *'
