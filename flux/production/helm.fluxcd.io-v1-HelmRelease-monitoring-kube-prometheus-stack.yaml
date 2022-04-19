@@ -24,6 +24,43 @@ spec:
         namespace: monitoring
         source_namespace: '{{ $labels.namespace }}'
     grafana:
+      admin:
+        existingSecret: kube-prometheus-stack-grafana
+        passwordKey: admin-password
+        userKey: admin-user
+      envValueFrom:
+        GF_AUTH_GITHUB_CLIENT_ID:
+          secretKeyRef:
+            key: client-id
+            name: grafana-github-oauth-client
+        GF_AUTH_GITHUB_CLIENT_SECRET:
+          secretKeyRef:
+            key: client-secret
+            name: grafana-github-oauth-client
+      grafana.ini:
+        analytics:
+          check_for_updates: true
+        auth.github:
+          allow_sign_up: true
+          allowed_organizations: spack
+          api_url: https://api.github.com/user
+          auth_url: https://github.com/login/oauth/authorize
+          client_id: DEADBEEF
+          client_secret: DEADBEEF
+          enabled: true
+          scopes: user:email,read:org
+          token_url: https://github.com/login/oauth/access_token
+        grafana_net:
+          url: https://grafana.net
+        log:
+          mode: console
+        paths:
+          data: /var/lib/grafana/
+          logs: /var/log/grafana
+          plugins: /var/lib/grafana/plugins
+          provisioning: /etc/grafana/provisioning
+        server:
+          root_url: https://grafana.spack.io
       ingress:
         enabled: false
     kube-state-metrics:

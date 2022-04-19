@@ -1,0 +1,415 @@
+---
+apiVersion: v1
+data:
+  pipeline-namespace-overview.json: "{\n  \"__inputs\": [\n\n  ],\n  \"__elements\"\
+    : [],\n  \"__requires\": [\n    {\n      \"type\": \"panel\",\n      \"id\": \"\
+    bargauge\",\n      \"name\": \"Bar gauge\",\n      \"version\": \"\"\n    },\n\
+    \    {\n      \"type\": \"panel\",\n      \"id\": \"gauge\",\n      \"name\":\
+    \ \"Gauge\",\n      \"version\": \"\"\n    },\n    {\n      \"type\": \"grafana\"\
+    ,\n      \"id\": \"grafana\",\n      \"name\": \"Grafana\",\n      \"version\"\
+    : \"8.3.4\"\n    },\n    {\n      \"type\": \"datasource\",\n      \"id\": \"\
+    prometheus\",\n      \"name\": \"Prometheus\",\n      \"version\": \"1.0.0\"\n\
+    \    },\n    {\n      \"type\": \"panel\",\n      \"id\": \"stat\",\n      \"\
+    name\": \"Stat\",\n      \"version\": \"\"\n    },\n    {\n      \"type\": \"\
+    panel\",\n      \"id\": \"timeseries\",\n      \"name\": \"Time series\",\n  \
+    \    \"version\": \"\"\n    }\n  ],\n  \"annotations\": {\n\n  },\n  \"editable\"\
+    : true,\n  \"fiscalYearStartMonth\": 0,\n  \"graphTooltip\": 0,\n  \"id\": null,\n\
+    \  \"links\": [],\n  \"liveNow\": false,\n  \"panels\": [\n    {\n      \"collapsed\"\
+    : false,\n      \"gridPos\": {\n        \"h\": 1,\n        \"w\": 24,\n      \
+    \  \"x\": 0,\n        \"y\": 0\n      },\n      \"id\": 14,\n      \"panels\"\
+    : [],\n      \"title\": \"Quick Stats\",\n      \"type\": \"row\"\n    },\n  \
+    \  {\n      \"fieldConfig\": {\n        \"defaults\": {\n          \"color\":\
+    \ {\n            \"mode\": \"thresholds\"\n          },\n          \"mappings\"\
+    : [],\n          \"noValue\": \"0\",\n          \"thresholds\": {\n          \
+    \  \"mode\": \"absolute\",\n            \"steps\": [\n              {\n      \
+    \          \"color\": \"green\",\n                \"value\": null\n          \
+    \    },\n              {\n                \"color\": \"red\",\n              \
+    \  \"value\": 80\n              }\n            ]\n          }\n        },\n  \
+    \      \"overrides\": []\n      },\n      \"gridPos\": {\n        \"h\": 8,\n\
+    \        \"w\": 3,\n        \"x\": 0,\n        \"y\": 1\n      },\n      \"id\"\
+    : 4,\n      \"options\": {\n        \"colorMode\": \"value\",\n        \"graphMode\"\
+    : \"none\",\n        \"justifyMode\": \"auto\",\n        \"orientation\": \"auto\"\
+    ,\n        \"reduceOptions\": {\n          \"calcs\": [\n            \"lastNotNull\"\
+    \n          ],\n          \"fields\": \"\",\n          \"values\": false\n   \
+    \     },\n        \"textMode\": \"auto\"\n      },\n      \"pluginVersion\": \"\
+    8.3.4\",\n      \"targets\": [\n        {\n          \"datasource\": {\n     \
+    \       \"type\": \"prometheus\",\n            \"uid\": \"${DS_PROMETHEUS}\"\n\
+    \          },\n          \"exemplar\": false,\n          \"expr\": \"sum(kube_node_labels{label_spack_io_pipeline=~\\\
+    \"true\\\"})\",\n          \"hide\": false,\n          \"instant\": true,\n  \
+    \        \"interval\": \"\",\n          \"legendFormat\": \"Instance\",\n    \
+    \      \"refId\": \"Node Count\"\n        }\n      ],\n      \"title\": \"Node\
+    \ Count\",\n      \"type\": \"stat\"\n    },\n    {\n      \"description\": \"\
+    \",\n      \"fieldConfig\": {\n        \"defaults\": {\n          \"color\": {\n\
+    \            \"mode\": \"thresholds\"\n          },\n          \"mappings\": [],\n\
+    \          \"max\": 100,\n          \"min\": 0,\n          \"noValue\": \"0\"\
+    ,\n          \"thresholds\": {\n            \"mode\": \"absolute\",\n        \
+    \    \"steps\": [\n              {\n                \"color\": \"green\",\n  \
+    \              \"value\": null\n              },\n              {\n          \
+    \      \"color\": \"#EAB839\",\n                \"value\": 80\n              },\n\
+    \              {\n                \"color\": \"red\",\n                \"value\"\
+    : 95\n              }\n            ]\n          },\n          \"unit\": \"percent\"\
+    \n        },\n        \"overrides\": []\n      },\n      \"gridPos\": {\n    \
+    \    \"h\": 8,\n        \"w\": 3,\n        \"x\": 3,\n        \"y\": 1\n     \
+    \ },\n      \"id\": 28,\n      \"options\": {\n        \"orientation\": \"auto\"\
+    ,\n        \"reduceOptions\": {\n          \"calcs\": [\n            \"lastNotNull\"\
+    \n          ],\n          \"fields\": \"\",\n          \"values\": false\n   \
+    \     },\n        \"showThresholdLabels\": false,\n        \"showThresholdMarkers\"\
+    : true\n      },\n      \"pluginVersion\": \"8.3.4\",\n      \"targets\": [\n\
+    \        {\n          \"datasource\": {\n            \"type\": \"prometheus\"\
+    ,\n            \"uid\": \"${DS_PROMETHEUS}\"\n          },\n          \"exemplar\"\
+    : false,\n          \"expr\": \"avg(\\n(kube_node_labels{label_spack_io_pipeline=\\\
+    \"true\\\"} * on(node) group_left(internal_ip) kube_node_info) * on(internal_ip)\
+    \ group_left label_replace(100 * sum by(instance) (sum without (cpu)(irate(node_cpu_seconds_total{mode!=\\\
+    \"idle\\\"}[3m])) / ignoring(mode) group_left sum without(mode, cpu) (irate(node_cpu_seconds_total[3m]))),\
+    \ 'internal_ip', '$1', 'instance', '(.+):.+'))\",\n          \"instant\": true,\n\
+    \          \"interval\": \"\",\n          \"legendFormat\": \"\",\n          \"\
+    refId\": \"CPU\"\n        }\n      ],\n      \"title\": \"CPU Total Utilization\"\
+    ,\n      \"type\": \"gauge\"\n    },\n    {\n      \"description\": \"\",\n  \
+    \    \"fieldConfig\": {\n        \"defaults\": {\n          \"color\": {\n   \
+    \         \"mode\": \"thresholds\"\n          },\n          \"mappings\": [],\n\
+    \          \"max\": 100,\n          \"min\": 0,\n          \"noValue\": \"0\"\
+    ,\n          \"thresholds\": {\n            \"mode\": \"absolute\",\n        \
+    \    \"steps\": [\n              {\n                \"color\": \"green\",\n  \
+    \              \"value\": null\n              },\n              {\n          \
+    \      \"color\": \"#EAB839\",\n                \"value\": 80\n              },\n\
+    \              {\n                \"color\": \"red\",\n                \"value\"\
+    : 95\n              }\n            ]\n          },\n          \"unit\": \"percent\"\
+    \n        },\n        \"overrides\": []\n      },\n      \"gridPos\": {\n    \
+    \    \"h\": 8,\n        \"w\": 3,\n        \"x\": 6,\n        \"y\": 1\n     \
+    \ },\n      \"id\": 30,\n      \"options\": {\n        \"orientation\": \"auto\"\
+    ,\n        \"reduceOptions\": {\n          \"calcs\": [\n            \"lastNotNull\"\
+    \n          ],\n          \"fields\": \"\",\n          \"values\": false\n   \
+    \     },\n        \"showThresholdLabels\": false,\n        \"showThresholdMarkers\"\
+    : true\n      },\n      \"pluginVersion\": \"8.3.4\",\n      \"targets\": [\n\
+    \        {\n          \"datasource\": {\n            \"type\": \"prometheus\"\
+    ,\n            \"uid\": \"${DS_PROMETHEUS}\"\n          },\n          \"exemplar\"\
+    : false,\n          \"expr\": \"avg(kube_node_info * on(internal_ip) group_right(node)\
+    \ label_replace(((node_memory_MemTotal_bytes - node_memory_MemFree_bytes) / node_memory_MemTotal_bytes)\
+    \ * 100, 'internal_ip', '$1', 'instance', '(.+):.+') and on(internal_ip) (kube_node_labels{label_spack_io_node_pool=~\\\
+    \"glr.*\\\"} * on(node) group_left(internal_ip) kube_node_info))\",\n        \
+    \  \"instant\": true,\n          \"interval\": \"\",\n          \"legendFormat\"\
+    : \"\",\n          \"refId\": \"RAM\"\n        }\n      ],\n      \"title\": \"\
+    RAM Total Utilization\",\n      \"type\": \"gauge\"\n    },\n    {\n      \"fieldConfig\"\
+    : {\n        \"defaults\": {\n          \"color\": {\n            \"mode\": \"\
+    thresholds\"\n          },\n          \"mappings\": [],\n          \"noValue\"\
+    : \"0\",\n          \"thresholds\": {\n            \"mode\": \"absolute\",\n \
+    \           \"steps\": [\n              {\n                \"color\": \"green\"\
+    ,\n                \"value\": null\n              }\n            ]\n         \
+    \ }\n        },\n        \"overrides\": []\n      },\n      \"gridPos\": {\n \
+    \       \"h\": 8,\n        \"w\": 3,\n        \"x\": 9,\n        \"y\": 1\n  \
+    \    },\n      \"id\": 16,\n      \"options\": {\n        \"colorMode\": \"value\"\
+    ,\n        \"graphMode\": \"none\",\n        \"justifyMode\": \"auto\",\n    \
+    \    \"orientation\": \"auto\",\n        \"reduceOptions\": {\n          \"calcs\"\
+    : [\n            \"lastNotNull\"\n          ],\n          \"fields\": \"\",\n\
+    \          \"values\": false\n        },\n        \"textMode\": \"auto\"\n   \
+    \   },\n      \"pluginVersion\": \"8.3.4\",\n      \"targets\": [\n        {\n\
+    \          \"datasource\": {\n            \"type\": \"prometheus\",\n        \
+    \    \"uid\": \"${DS_PROMETHEUS}\"\n          },\n          \"exemplar\": false,\n\
+    \          \"expr\": \"sum(kube_pod_info{namespace=\\\"pipeline\\\"})\",\n   \
+    \       \"hide\": false,\n          \"instant\": true,\n          \"interval\"\
+    : \"\",\n          \"legendFormat\": \"Pods\",\n          \"refId\": \"Node Count\"\
+    \n        }\n      ],\n      \"title\": \"Pod Count\",\n      \"type\": \"stat\"\
+    \n    },\n    {\n      \"fieldConfig\": {\n        \"defaults\": {\n         \
+    \ \"color\": {\n            \"mode\": \"thresholds\"\n          },\n         \
+    \ \"mappings\": [],\n          \"noValue\": \"0\",\n          \"thresholds\":\
+    \ {\n            \"mode\": \"absolute\",\n            \"steps\": [\n         \
+    \     {\n                \"color\": \"green\",\n                \"value\": null\n\
+    \              },\n              {\n                \"color\": \"red\",\n    \
+    \            \"value\": 80\n              }\n            ]\n          }\n    \
+    \    },\n        \"overrides\": []\n      },\n      \"gridPos\": {\n        \"\
+    h\": 8,\n        \"w\": 3,\n        \"x\": 12,\n        \"y\": 1\n      },\n \
+    \     \"id\": 38,\n      \"options\": {\n        \"colorMode\": \"value\",\n \
+    \       \"graphMode\": \"area\",\n        \"justifyMode\": \"auto\",\n       \
+    \ \"orientation\": \"auto\",\n        \"reduceOptions\": {\n          \"calcs\"\
+    : [\n            \"lastNotNull\"\n          ],\n          \"fields\": \"\",\n\
+    \          \"values\": false\n        },\n        \"textMode\": \"auto\"\n   \
+    \   },\n      \"pluginVersion\": \"8.3.4\",\n      \"targets\": [\n        {\n\
+    \          \"datasource\": {\n            \"type\": \"prometheus\",\n        \
+    \    \"uid\": \"${DS_PROMETHEUS}\"\n          },\n          \"exemplar\": false,\n\
+    \          \"expr\": \"count(sum by(label_metrics_gitlab_ci_commit_ref_name) (kube_pod_info{namespace=\\\
+    \"pipeline\\\"} * on(pod) group_left(label_metrics_gitlab_ci_commit_ref_name)\
+    \ kube_pod_labels{namespace=\\\"pipeline\\\"}))\",\n          \"instant\": true,\n\
+    \          \"interval\": \"\",\n          \"legendFormat\": \"\",\n          \"\
+    refId\": \"A\"\n        }\n      ],\n      \"title\": \"Pipeline Count\",\n  \
+    \    \"type\": \"stat\"\n    },\n    {\n      \"fieldConfig\": {\n        \"defaults\"\
+    : {\n          \"color\": {\n            \"mode\": \"thresholds\"\n          },\n\
+    \          \"mappings\": [],\n          \"noValue\": \"0\",\n          \"thresholds\"\
+    : {\n            \"mode\": \"absolute\",\n            \"steps\": [\n         \
+    \     {\n                \"color\": \"green\",\n                \"value\": null\n\
+    \              }\n            ]\n          }\n        },\n        \"overrides\"\
+    : []\n      },\n      \"gridPos\": {\n        \"h\": 8,\n        \"w\": 9,\n \
+    \       \"x\": 15,\n        \"y\": 1\n      },\n      \"id\": 36,\n      \"options\"\
+    : {\n        \"displayMode\": \"gradient\",\n        \"orientation\": \"horizontal\"\
+    ,\n        \"reduceOptions\": {\n          \"calcs\": [\n            \"lastNotNull\"\
+    \n          ],\n          \"fields\": \"\",\n          \"values\": false\n   \
+    \     },\n        \"showUnfilled\": true\n      },\n      \"pluginVersion\": \"\
+    8.3.4\",\n      \"targets\": [\n        {\n          \"datasource\": {\n     \
+    \       \"type\": \"prometheus\",\n            \"uid\": \"${DS_PROMETHEUS}\"\n\
+    \          },\n          \"exemplar\": false,\n          \"expr\": \"sum by(label_metrics_gitlab_ci_commit_ref_name)\
+    \ (kube_pod_info{namespace=\\\"pipeline\\\"} * on(pod) group_left(label_metrics_gitlab_ci_commit_ref_name)\
+    \ kube_pod_labels{namespace=\\\"pipeline\\\"})\",\n          \"instant\": true,\n\
+    \          \"interval\": \"\",\n          \"legendFormat\": \"{{ label_metrics_gitlab_ci_commit_ref_name\
+    \ }}\",\n          \"refId\": \"A\"\n        }\n      ],\n      \"title\": \"\
+    Pod number by Pipeline\",\n      \"type\": \"bargauge\"\n    },\n    {\n     \
+    \ \"description\": \"\",\n      \"fieldConfig\": {\n        \"defaults\": {\n\
+    \          \"color\": {\n            \"mode\": \"thresholds\"\n          },\n\
+    \          \"mappings\": [],\n          \"noValue\": \"0\",\n          \"thresholds\"\
+    : {\n            \"mode\": \"absolute\",\n            \"steps\": [\n         \
+    \     {\n                \"color\": \"green\",\n                \"value\": null\n\
+    \              }\n            ]\n          }\n        },\n        \"overrides\"\
+    : []\n      },\n      \"gridPos\": {\n        \"h\": 8,\n        \"w\": 3,\n \
+    \       \"x\": 0,\n        \"y\": 9\n      },\n      \"id\": 18,\n      \"options\"\
+    : {\n        \"colorMode\": \"value\",\n        \"graphMode\": \"none\",\n   \
+    \     \"justifyMode\": \"auto\",\n        \"orientation\": \"horizontal\",\n \
+    \       \"reduceOptions\": {\n          \"calcs\": [\n            \"lastNotNull\"\
+    \n          ],\n          \"fields\": \"\",\n          \"values\": false\n   \
+    \     },\n        \"textMode\": \"auto\"\n      },\n      \"pluginVersion\": \"\
+    8.3.4\",\n      \"targets\": [\n        {\n          \"datasource\": {\n     \
+    \       \"type\": \"prometheus\",\n            \"uid\": \"${DS_PROMETHEUS}\"\n\
+    \          },\n          \"exemplar\": false,\n          \"expr\": \"sum((kube_node_labels{label_spack_io_node_pool=~\\\
+    \"glr.*\\\"} * on(node) group_left() kube_node_info) * on(node) group_left() node:node_num_cpu:sum)\"\
+    ,\n          \"instant\": true,\n          \"interval\": \"\",\n          \"legendFormat\"\
+    : \"CPU\",\n          \"refId\": \"Total CPU\"\n        }\n      ],\n      \"\
+    title\": \"CPU Total\",\n      \"type\": \"stat\"\n    },\n    {\n      \"fieldConfig\"\
+    : {\n        \"defaults\": {\n          \"color\": {\n            \"mode\": \"\
+    thresholds\"\n          },\n          \"mappings\": [],\n          \"max\": 100,\n\
+    \          \"min\": 0,\n          \"thresholds\": {\n            \"mode\": \"\
+    absolute\",\n            \"steps\": [\n              {\n                \"color\"\
+    : \"green\",\n                \"value\": null\n              },\n            \
+    \  {\n                \"color\": \"orange\",\n                \"value\": 80\n\
+    \              },\n              {\n                \"color\": \"red\",\n    \
+    \            \"value\": 95\n              }\n            ]\n          },\n   \
+    \       \"unit\": \"percent\"\n        },\n        \"overrides\": []\n      },\n\
+    \      \"gridPos\": {\n        \"h\": 8,\n        \"w\": 21,\n        \"x\": 3,\n\
+    \        \"y\": 9\n      },\n      \"id\": 32,\n      \"options\": {\n       \
+    \ \"orientation\": \"auto\",\n        \"reduceOptions\": {\n          \"calcs\"\
+    : [\n            \"lastNotNull\"\n          ],\n          \"fields\": \"\",\n\
+    \          \"values\": false\n        },\n        \"showThresholdLabels\": false,\n\
+    \        \"showThresholdMarkers\": true\n      },\n      \"pluginVersion\": \"\
+    8.3.4\",\n      \"targets\": [\n        {\n          \"datasource\": {\n     \
+    \       \"type\": \"prometheus\",\n            \"uid\": \"${DS_PROMETHEUS}\"\n\
+    \          },\n          \"exemplar\": false,\n          \"expr\": \"(kube_node_labels{label_spack_io_pipeline=\\\
+    \"true\\\"} * on(node) group_left(internal_ip) kube_node_info) * on(internal_ip)\
+    \ group_left label_replace(100 * sum by(instance) (sum without (cpu)(irate(node_cpu_seconds_total{mode!=\\\
+    \"idle\\\"}[3m])) / ignoring(mode) group_left sum without(mode, cpu) (irate(node_cpu_seconds_total[3m]))),\
+    \ 'internal_ip', '$1', 'instance', '(.+):.+')\",\n          \"instant\": true,\n\
+    \          \"interval\": \"\",\n          \"legendFormat\": \"{{ node }}\",\n\
+    \          \"refId\": \"A\"\n        }\n      ],\n      \"title\": \"CPU Utilization\"\
+    ,\n      \"type\": \"gauge\"\n    },\n    {\n      \"fieldConfig\": {\n      \
+    \  \"defaults\": {\n          \"color\": {\n            \"mode\": \"thresholds\"\
+    \n          },\n          \"mappings\": [],\n          \"noValue\": \"0\",\n \
+    \         \"thresholds\": {\n            \"mode\": \"absolute\",\n           \
+    \ \"steps\": [\n              {\n                \"color\": \"green\",\n     \
+    \           \"value\": null\n              }\n            ]\n          },\n  \
+    \        \"unit\": \"decbytes\"\n        },\n        \"overrides\": []\n     \
+    \ },\n      \"gridPos\": {\n        \"h\": 8,\n        \"w\": 3,\n        \"x\"\
+    : 0,\n        \"y\": 17\n      },\n      \"id\": 20,\n      \"options\": {\n \
+    \       \"colorMode\": \"value\",\n        \"graphMode\": \"none\",\n        \"\
+    justifyMode\": \"auto\",\n        \"orientation\": \"auto\",\n        \"reduceOptions\"\
+    : {\n          \"calcs\": [\n            \"lastNotNull\"\n          ],\n     \
+    \     \"fields\": \"\",\n          \"values\": false\n        },\n        \"textMode\"\
+    : \"auto\"\n      },\n      \"pluginVersion\": \"8.3.4\",\n      \"targets\":\
+    \ [\n        {\n          \"datasource\": {\n            \"type\": \"prometheus\"\
+    ,\n            \"uid\": \"${DS_PROMETHEUS}\"\n          },\n          \"exemplar\"\
+    : false,\n          \"expr\": \"sum((label_replace(node_memory_MemTotal_bytes,\
+    \ 'internal_ip', '$1', 'instance', '(.+):.+') and on(internal_ip) kube_node_labels{label_spack_io_node_pool=~\\\
+    \"glr.*\\\"} * on(node) group_left(internal_ip) kube_node_info))\",\n        \
+    \  \"instant\": true,\n          \"interval\": \"\",\n          \"legendFormat\"\
+    : \"Bytes\",\n          \"refId\": \"A\"\n        }\n      ],\n      \"title\"\
+    : \"RAM Total\",\n      \"type\": \"stat\"\n    },\n    {\n      \"fieldConfig\"\
+    : {\n        \"defaults\": {\n          \"color\": {\n            \"mode\": \"\
+    thresholds\"\n          },\n          \"mappings\": [],\n          \"max\": 100,\n\
+    \          \"min\": 0,\n          \"thresholds\": {\n            \"mode\": \"\
+    absolute\",\n            \"steps\": [\n              {\n                \"color\"\
+    : \"green\",\n                \"value\": null\n              },\n            \
+    \  {\n                \"color\": \"orange\",\n                \"value\": 80\n\
+    \              },\n              {\n                \"color\": \"red\",\n    \
+    \            \"value\": 95\n              }\n            ]\n          },\n   \
+    \       \"unit\": \"percent\"\n        },\n        \"overrides\": []\n      },\n\
+    \      \"gridPos\": {\n        \"h\": 8,\n        \"w\": 21,\n        \"x\": 3,\n\
+    \        \"y\": 17\n      },\n      \"id\": 34,\n      \"options\": {\n      \
+    \  \"orientation\": \"auto\",\n        \"reduceOptions\": {\n          \"calcs\"\
+    : [\n            \"lastNotNull\"\n          ],\n          \"fields\": \"\",\n\
+    \          \"values\": false\n        },\n        \"showThresholdLabels\": false,\n\
+    \        \"showThresholdMarkers\": true\n      },\n      \"pluginVersion\": \"\
+    8.3.4\",\n      \"targets\": [\n        {\n          \"datasource\": {\n     \
+    \       \"type\": \"prometheus\",\n            \"uid\": \"${DS_PROMETHEUS}\"\n\
+    \          },\n          \"exemplar\": false,\n          \"expr\": \"(kube_node_labels{label_spack_io_pipeline=\\\
+    \"true\\\"} * on(node) group_left(internal_ip) kube_node_info) * on(internal_ip)\
+    \ group_left label_replace(((node_memory_MemTotal_bytes - node_memory_MemFree_bytes)\
+    \ / node_memory_MemTotal_bytes) * 100, 'internal_ip', '$1', 'instance', '(.+):.+')\
+    \ \",\n          \"instant\": true,\n          \"interval\": \"\",\n         \
+    \ \"legendFormat\": \"{{ node }}\",\n          \"refId\": \"A\"\n        }\n \
+    \     ],\n      \"title\": \"RAM Utilization\",\n      \"type\": \"gauge\"\n \
+    \   },\n    {\n      \"collapsed\": true,\n      \"gridPos\": {\n        \"h\"\
+    : 1,\n        \"w\": 24,\n        \"x\": 0,\n        \"y\": 25\n      },\n   \
+    \   \"id\": 12,\n      \"panels\": [\n        {\n          \"fieldConfig\": {\n\
+    \            \"defaults\": {\n              \"color\": {\n                \"mode\"\
+    : \"palette-classic\"\n              },\n              \"custom\": {\n       \
+    \         \"axisLabel\": \"\",\n                \"axisPlacement\": \"auto\",\n\
+    \                \"barAlignment\": 0,\n                \"drawStyle\": \"line\"\
+    ,\n                \"fillOpacity\": 0,\n                \"gradientMode\": \"none\"\
+    ,\n                \"hideFrom\": {\n                  \"legend\": false,\n   \
+    \               \"tooltip\": false,\n                  \"viz\": false\n      \
+    \          },\n                \"lineInterpolation\": \"linear\",\n          \
+    \      \"lineWidth\": 2,\n                \"pointSize\": 5,\n                \"\
+    scaleDistribution\": {\n                  \"type\": \"linear\"\n             \
+    \   },\n                \"showPoints\": \"auto\",\n                \"spanNulls\"\
+    : false,\n                \"stacking\": {\n                  \"group\": \"A\"\
+    ,\n                  \"mode\": \"none\"\n                },\n                \"\
+    thresholdsStyle\": {\n                  \"mode\": \"off\"\n                }\n\
+    \              },\n              \"mappings\": [],\n              \"thresholds\"\
+    : {\n                \"mode\": \"absolute\",\n                \"steps\": [\n \
+    \                 {\n                    \"color\": \"green\"\n              \
+    \    },\n                  {\n                    \"color\": \"red\",\n      \
+    \              \"value\": 80\n                  }\n                ]\n       \
+    \       }\n            },\n            \"overrides\": []\n          },\n     \
+    \     \"gridPos\": {\n            \"h\": 12,\n            \"w\": 24,\n       \
+    \     \"x\": 0,\n            \"y\": 2\n          },\n          \"id\": 10,\n \
+    \         \"options\": {\n            \"legend\": {\n              \"calcs\":\
+    \ [],\n              \"displayMode\": \"list\",\n              \"placement\":\
+    \ \"bottom\"\n            },\n            \"tooltip\": {\n              \"mode\"\
+    : \"single\"\n            }\n          },\n          \"targets\": [\n        \
+    \    {\n              \"datasource\": {\n                \"type\": \"prometheus\"\
+    ,\n                \"uid\": \"${DS_PROMETHEUS}\"\n              },\n         \
+    \     \"exemplar\": true,\n              \"expr\": \"sum by(label_metrics_gitlab_ci_commit_ref_name)\
+    \ (kube_pod_info{namespace=\\\"pipeline\\\"} * on(pod) group_left(label_metrics_gitlab_ci_commit_ref_name)\
+    \ kube_pod_labels{namespace=\\\"pipeline\\\"})\",\n              \"interval\"\
+    : \"\",\n              \"legendFormat\": \"{{label_metrics_gitlab_ci_commit_ref_name}}\"\
+    ,\n              \"refId\": \"A\"\n            }\n          ],\n          \"title\"\
+    : \"Pod count per CI Ref\",\n          \"type\": \"timeseries\"\n        }\n \
+    \     ],\n      \"title\": \"Pods\",\n      \"type\": \"row\"\n    },\n    {\n\
+    \      \"collapsed\": false,\n      \"gridPos\": {\n        \"h\": 1,\n      \
+    \  \"w\": 24,\n        \"x\": 0,\n        \"y\": 26\n      },\n      \"id\": 2,\n\
+    \      \"panels\": [],\n      \"title\": \"Nodes\",\n      \"type\": \"row\"\n\
+    \    },\n    {\n      \"fieldConfig\": {\n        \"defaults\": {\n          \"\
+    color\": {\n            \"mode\": \"palette-classic\"\n          },\n        \
+    \  \"custom\": {\n            \"axisLabel\": \"\",\n            \"axisPlacement\"\
+    : \"auto\",\n            \"barAlignment\": 0,\n            \"drawStyle\": \"line\"\
+    ,\n            \"fillOpacity\": 0,\n            \"gradientMode\": \"none\",\n\
+    \            \"hideFrom\": {\n              \"legend\": false,\n             \
+    \ \"tooltip\": false,\n              \"viz\": false\n            },\n        \
+    \    \"lineInterpolation\": \"linear\",\n            \"lineWidth\": 1,\n     \
+    \       \"pointSize\": 5,\n            \"scaleDistribution\": {\n            \
+    \  \"type\": \"linear\"\n            },\n            \"showPoints\": \"auto\"\
+    ,\n            \"spanNulls\": false,\n            \"stacking\": {\n          \
+    \    \"group\": \"A\",\n              \"mode\": \"none\"\n            },\n   \
+    \         \"thresholdsStyle\": {\n              \"mode\": \"off\"\n          \
+    \  }\n          },\n          \"mappings\": [],\n          \"thresholds\": {\n\
+    \            \"mode\": \"absolute\",\n            \"steps\": [\n             \
+    \ {\n                \"color\": \"green\",\n                \"value\": null\n\
+    \              },\n              {\n                \"color\": \"yellow\",\n \
+    \               \"value\": 80\n              },\n              {\n           \
+    \     \"color\": \"red\",\n                \"value\": 95\n              }\n  \
+    \          ]\n          }\n        },\n        \"overrides\": []\n      },\n \
+    \     \"gridPos\": {\n        \"h\": 10,\n        \"w\": 24,\n        \"x\": 0,\n\
+    \        \"y\": 27\n      },\n      \"id\": 24,\n      \"options\": {\n      \
+    \  \"legend\": {\n          \"calcs\": [],\n          \"displayMode\": \"list\"\
+    ,\n          \"placement\": \"bottom\"\n        },\n        \"tooltip\": {\n \
+    \         \"mode\": \"multi\"\n        }\n      },\n      \"pluginVersion\": \"\
+    8.3.4\",\n      \"targets\": [\n        {\n          \"datasource\": {\n     \
+    \       \"type\": \"prometheus\",\n            \"uid\": \"${DS_PROMETHEUS}\"\n\
+    \          },\n          \"exemplar\": true,\n          \"expr\": \"avg(kube_node_info\
+    \ * on(internal_ip) group_right(node) label_replace(((node_memory_MemTotal_bytes\
+    \ - node_memory_MemFree_bytes) / node_memory_MemTotal_bytes) * 100, 'internal_ip',\
+    \ '$1', 'instance', '(.+):.+') and on(internal_ip) (kube_node_labels{label_spack_io_node_pool=~\\\
+    \"glr.*\\\"} * on(node) group_left(internal_ip) kube_node_info))\\n\",\n     \
+    \     \"format\": \"time_series\",\n          \"instant\": false,\n          \"\
+    interval\": \"\",\n          \"legendFormat\": \"RAM\",\n          \"refId\":\
+    \ \"RAM\"\n        },\n        {\n          \"datasource\": {\n            \"\
+    type\": \"prometheus\",\n            \"uid\": \"${DS_PROMETHEUS}\"\n         \
+    \ },\n          \"exemplar\": true,\n          \"expr\": \"avg(kube_node_info\
+    \ * on(internal_ip) group_right(node) label_replace((100 - (avg by (instance)\
+    \ (rate(node_cpu_seconds_total{job=\\\"node-exporter\\\",mode=\\\"idle\\\"}[1m]))\
+    \ * 100)), 'internal_ip', '$1', 'instance', '(.+):.+') and on(internal_ip) (kube_node_labels{label_spack_io_node_pool=~\\\
+    \"glr.*\\\"} * on(node) group_left(internal_ip) kube_node_info))\\n\",\n     \
+    \     \"hide\": false,\n          \"interval\": \"\",\n          \"legendFormat\"\
+    : \"CPU\",\n          \"refId\": \"CPU\"\n        },\n        {\n          \"\
+    datasource\": {\n            \"type\": \"prometheus\",\n            \"uid\": \"\
+    ${DS_PROMETHEUS}\"\n          },\n          \"exemplar\": true,\n          \"\
+    expr\": \"sum(kube_node_labels{label_spack_io_node_pool=~\\\"glr.*\\\"})\",\n\
+    \          \"hide\": true,\n          \"interval\": \"\",\n          \"legendFormat\"\
+    : \"Node Count\",\n          \"refId\": \"Node Count\"\n        }\n      ],\n\
+    \      \"title\": \"Utilization\",\n      \"type\": \"timeseries\"\n    },\n \
+    \   {\n      \"fieldConfig\": {\n        \"defaults\": {\n          \"color\"\
+    : {\n            \"mode\": \"palette-classic\"\n          },\n          \"custom\"\
+    : {\n            \"axisLabel\": \"\",\n            \"axisPlacement\": \"auto\"\
+    ,\n            \"barAlignment\": 0,\n            \"drawStyle\": \"line\",\n  \
+    \          \"fillOpacity\": 0,\n            \"gradientMode\": \"opacity\",\n \
+    \           \"hideFrom\": {\n              \"legend\": false,\n              \"\
+    tooltip\": false,\n              \"viz\": false\n            },\n            \"\
+    lineInterpolation\": \"linear\",\n            \"lineWidth\": 1,\n            \"\
+    pointSize\": 5,\n            \"scaleDistribution\": {\n              \"type\"\
+    : \"linear\"\n            },\n            \"showPoints\": \"never\",\n       \
+    \     \"spanNulls\": false,\n            \"stacking\": {\n              \"group\"\
+    : \"A\",\n              \"mode\": \"none\"\n            },\n            \"thresholdsStyle\"\
+    : {\n              \"mode\": \"off\"\n            }\n          },\n          \"\
+    mappings\": [],\n          \"thresholds\": {\n            \"mode\": \"absolute\"\
+    ,\n            \"steps\": [\n              {\n                \"color\": \"green\"\
+    ,\n                \"value\": null\n              },\n              {\n      \
+    \          \"color\": \"red\",\n                \"value\": 80\n              }\n\
+    \            ]\n          }\n        },\n        \"overrides\": []\n      },\n\
+    \      \"gridPos\": {\n        \"h\": 9,\n        \"w\": 24,\n        \"x\": 0,\n\
+    \        \"y\": 37\n      },\n      \"id\": 6,\n      \"options\": {\n       \
+    \ \"legend\": {\n          \"calcs\": [],\n          \"displayMode\": \"list\"\
+    ,\n          \"placement\": \"bottom\"\n        },\n        \"tooltip\": {\n \
+    \         \"mode\": \"multi\"\n        }\n      },\n      \"targets\": [\n   \
+    \     {\n          \"datasource\": {\n            \"type\": \"prometheus\",\n\
+    \            \"uid\": \"${DS_PROMETHEUS}\"\n          },\n          \"exemplar\"\
+    : true,\n          \"expr\": \"sum by(label_beta_kubernetes_io_instance_type)\
+    \ (kube_node_labels{label_spack_io_node_pool=~\\\"glr.*\\\"})\",\n          \"\
+    interval\": \"\",\n          \"legendFormat\": \"{{label_beta_kubernetes_io_instance_type}}\"\
+    ,\n          \"refId\": \"Nodes by Type\"\n        }\n      ],\n      \"title\"\
+    : \"Node Count  by Type\",\n      \"type\": \"timeseries\"\n    },\n    {\n  \
+    \    \"fieldConfig\": {\n        \"defaults\": {\n          \"color\": {\n   \
+    \         \"mode\": \"palette-classic\"\n          },\n          \"custom\": {\n\
+    \            \"axisLabel\": \"\",\n            \"axisPlacement\": \"auto\",\n\
+    \            \"barAlignment\": 0,\n            \"drawStyle\": \"line\",\n    \
+    \        \"fillOpacity\": 0,\n            \"gradientMode\": \"none\",\n      \
+    \      \"hideFrom\": {\n              \"legend\": false,\n              \"tooltip\"\
+    : false,\n              \"viz\": false\n            },\n            \"lineInterpolation\"\
+    : \"linear\",\n            \"lineWidth\": 1,\n            \"pointSize\": 5,\n\
+    \            \"scaleDistribution\": {\n              \"type\": \"linear\"\n  \
+    \          },\n            \"showPoints\": \"auto\",\n            \"spanNulls\"\
+    : false,\n            \"stacking\": {\n              \"group\": \"A\",\n     \
+    \         \"mode\": \"none\"\n            },\n            \"thresholdsStyle\"\
+    : {\n              \"mode\": \"off\"\n            }\n          },\n          \"\
+    mappings\": [],\n          \"thresholds\": {\n            \"mode\": \"absolute\"\
+    ,\n            \"steps\": [\n              {\n                \"color\": \"green\"\
+    ,\n                \"value\": null\n              },\n              {\n      \
+    \          \"color\": \"red\",\n                \"value\": 80\n              }\n\
+    \            ]\n          }\n        },\n        \"overrides\": []\n      },\n\
+    \      \"gridPos\": {\n        \"h\": 9,\n        \"w\": 24,\n        \"x\": 0,\n\
+    \        \"y\": 46\n      },\n      \"id\": 8,\n      \"options\": {\n       \
+    \ \"legend\": {\n          \"calcs\": [],\n          \"displayMode\": \"list\"\
+    ,\n          \"placement\": \"bottom\"\n        },\n        \"tooltip\": {\n \
+    \         \"mode\": \"single\"\n        }\n      },\n      \"targets\": [\n  \
+    \      {\n          \"datasource\": {\n            \"type\": \"prometheus\",\n\
+    \            \"uid\": \"${DS_PROMETHEUS}\"\n          },\n          \"exemplar\"\
+    : true,\n          \"expr\": \"avg by(label_beta_kubernetes_io_instance_type)\
+    \ (kube_node_labels{label_spack_io_node_pool=~\\\"glr.*\\\"} * on(node) group_left()\
+    \ sum by(node) (kube_pod_info{namespace=\\\"pipeline\\\", node!=\\\"\\\"}))\"\
+    ,\n          \"interval\": \"\",\n          \"legendFormat\": \"{{node}}\",\n\
+    \          \"refId\": \"pods per node\"\n        }\n      ],\n      \"title\"\
+    : \"Avg Pods per Instance Type\",\n      \"type\": \"timeseries\"\n    },\n  \
+    \  {\n      \"collapsed\": true,\n      \"gridPos\": {\n        \"h\": 1,\n  \
+    \      \"w\": 24,\n        \"x\": 0,\n        \"y\": 55\n      },\n      \"id\"\
+    : 26,\n      \"panels\": [],\n      \"title\": \"Testing\",\n      \"type\": \"\
+    row\"\n    }\n  ],\n  \"refresh\": \"10s\",\n  \"schemaVersion\": 34,\n  \"style\"\
+    : \"dark\",\n  \"tags\": [],\n  \"templating\": {\n    \"list\": [\n      {\n\
+    \        \"current\": {\n          \"text\": \"default\",\n          \"value\"\
+    : \"default\"\n        },\n        \"hide\": 0,\n        \"label\": \"Data Source\"\
+    ,\n        \"name\": \"DS_PROMETHEUS\",\n        \"options\": [\n\n        ],\n\
+    \        \"query\": \"prometheus\",\n        \"refresh\": 1,\n        \"regex\"\
+    : \"\",\n        \"type\": \"datasource\"\n      }\n    ]\n  },\n  \"time\": {\n\
+    \    \"from\": \"now-3h\",\n    \"to\": \"now\"\n  },\n  \"timepicker\": {},\n\
+    \  \"timezone\": \"\",\n  \"title\": \"Pipeline / Overview\",\n  \"uid\": \"UMI_eRy7z\"\
+    ,\n  \"version\": 1,\n  \"weekStart\": \"\"\n}"
+kind: ConfigMap
+metadata:
+  labels:
+    app: kube-prometheus-stack-grafana
+    grafana_dashboard: '1'
+    release: kube-prometheus-stack
+  name: kube-prometheus-stack-pipeline-namespace-overview
+  namespace: monitoring

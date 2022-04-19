@@ -2,17 +2,17 @@
 apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
-  name: runner-large-x86-pub
+  name: runner-large-x86-testing-pub
   namespace: gitlab
 spec:
   chart:
     name: gitlab-runner
     repository: https://charts.gitlab.io
     version: 0.37.2
-  releaseName: large-x86-pub
+  releaseName: large-x86-testing-pub
   values:
     checkInterval: 30
-    concurrent: 20
+    concurrent: 5
     gitlabUrl: https://gitlab.spack.io/
     image: gitlab/gitlab-runner:alpine-v14.7.0
     imagePullPolicy: IfNotPresent
@@ -22,7 +22,6 @@ spec:
       spack.io/node-pool: base
     rbac:
       serviceAccountName: runner
-    replicas: 6
     runners:
       cache: {}
       config: "[[runners]]\n  output_limit = 4096\n  environment = [\"FF_GITLAB_REGISTRY_HELPER_IMAGE=1\"\
@@ -45,7 +44,7 @@ spec:
         \ \"metrics/spack_job_spec_pkg_name\" = \"$SPACK_JOB_SPEC_PKG_NAME\"\n   \
         \   \"metrics/spack_spec_needs_rebuild\" = \"$SPACK_SPEC_NEEDS_REBUILD\"\n\
         \    [runners.kubernetes.node_selector]\n      \"kubernetes.io/arch\" = \"\
-        amd64\"\n      \"spack.io/node-pool\" = \"glr-large-pub\"\n"
+        amd64\"\n      \"spack.io/node-pool\" = \"glr-large-testing-pub\"\n"
       helpers: {}
       image: busybox:1.32.0
       imagePullPolicy: if-not-present
@@ -53,6 +52,6 @@ spec:
       runUntagged: false
       secret: gitlab-gitlab-runner-secret
       services: {}
-      tags: x86_64,avx,avx2,avx512,large,public,aws,spack
+      tags: x86_64,avx,avx2,avx512,large,public,aws,spack,testing
     terminationGracePeriodSeconds: 21600
     unregisterRunners: true

@@ -1,0 +1,14 @@
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: aws-node-termination-handler
+  namespace: kube-system
+spec:
+  chart:
+    name: aws-node-termination-handler
+    repository: https://aws.github.io/eks-charts
+    version: 0.18.0
+  releaseName: aws-node-termination-handler
+  values:
+    emitKubernetesEvents: true
