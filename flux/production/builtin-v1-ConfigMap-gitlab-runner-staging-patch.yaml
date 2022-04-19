@@ -6,11 +6,12 @@ data:
   name: runner-large-x86-pub
   patch: "- op: replace\n  path: /metadata/name\n  value: runner-{ENV}\n- op: replace\n\
     \  path: /spec/chart/version\n  value: \"0.37.2\"  # bleeding edge\n- op: replace\n\
-    \  path: /spec/releaseName\n  value: runner-{ENV}\n- op: replace\n  path: /spec/values/gitlabUrl\n\
-    \  value: \"https://gitlab.{ENV}.spack.io/\"\n- op: replace\n  path: /spec/values/terminationGracePeriodSeconds\n\
-    \  value: 300  # five minutes\n- op: replace\n  path: /spec/values/concurrent\n\
-    \  value: 3\n- op: replace\n  path: /spec/values/checkInterval\n  value: 1\n-\
-    \ op: replace\n  path: /spec/values/runners/tags\n  value: \"x86_64,avx,avx2,avx512,{ENV},public,aws,spack\"\
+    \  path: /spec/releaseName\n  value: runner-{ENV}\n- op: replace\n  path: /spec/values/replicas\n\
+    \  value: 1\n- op: replace\n  path: /spec/values/gitlabUrl\n  value: \"https://gitlab.{ENV}.spack.io/\"\
+    \n- op: replace\n  path: /spec/values/terminationGracePeriodSeconds\n  value:\
+    \ 300  # five minutes\n- op: replace\n  path: /spec/values/concurrent\n  value:\
+    \ 3\n- op: replace\n  path: /spec/values/checkInterval\n  value: 1\n- op: replace\n\
+    \  path: /spec/values/runners/tags\n  value: \"x86_64,avx,avx2,avx512,small,medium,large,huge,{ENV},public,aws,spack\"\
     \n- op: replace\n  path: /spec/values/runners/secret\n  value: gitlab-{ENV}-gitlab-runner-secret\n\
     - op: replace\n  path: /spec/values/runners/config\n  value: |\n      [[runners]]\n\
     \      output_limit = 4096\n      environment = [\"FF_GITLAB_REGISTRY_HELPER_IMAGE=1\"\

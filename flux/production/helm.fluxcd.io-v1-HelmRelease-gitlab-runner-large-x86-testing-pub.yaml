@@ -52,6 +52,6 @@ spec:
       runUntagged: false
       secret: gitlab-gitlab-runner-secret
       services: {}
-      tags: x86_64,avx,avx2,avx512,large,public,aws,spack,testing
+      tags: testing
     terminationGracePeriodSeconds: 21600
     unregisterRunners: true
