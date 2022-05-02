@@ -27,8 +27,6 @@ spec:
         service:
           servicePort: 9913
           type: ClusterIP
-        serviceMonitor:
-          enabled: true
       minAvailable: 1
       nodeSelector:
         spack.io/node-pool: base

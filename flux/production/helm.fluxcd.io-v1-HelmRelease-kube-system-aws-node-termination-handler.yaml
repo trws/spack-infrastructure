@@ -12,3 +12,5 @@ spec:
   releaseName: aws-node-termination-handler
   values:
     emitKubernetesEvents: true
+    enablePrometheusServer: true
+    prometheusServerPort: 9092
