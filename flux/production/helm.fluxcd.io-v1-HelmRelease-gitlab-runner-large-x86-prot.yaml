@@ -2,14 +2,14 @@
 apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
-  name: runner-large-x86-pub
+  name: runner-large-x86-prot
   namespace: gitlab
 spec:
   chart:
     name: gitlab-runner
     repository: https://charts.gitlab.io
     version: 0.37.2
-  releaseName: large-x86-pub
+  releaseName: large-x86-prot
   values:
     checkInterval: 30
     concurrent: 20
@@ -27,10 +27,10 @@ spec:
       cache: {}
       config: "[[runners]]\n  output_limit = 4096\n  environment = [\"FF_GITLAB_REGISTRY_HELPER_IMAGE=1\"\
         ]\n  [runners.kubernetes]\n    privileged = false\n\n    cpu_request = \"\
-        750m\"\n    cpu_request_overwrite_max_allowed = \"12\"\n    cpu_limit = \"\
-        12\"\n    cpu_limit_overwrite_max_allowed = \"12\"\n\n    memory_request =\
-        \ \"2G\"\n    memory_request_overwrite_max_allowed = \"48G\"\n    memory_limit\
-        \ = \"48G\"\n    memory_limit_overwrite_max_allowed = \"48G\"\n\n    namespace\
+        750m\"\n    cpu_request_overwrite_max_allowed = \"16\"\n    cpu_limit = \"\
+        16\"\n    cpu_limit_overwrite_max_allowed = \"16\"\n\n    memory_request =\
+        \ \"2G\"\n    memory_request_overwrite_max_allowed = \"64G\"\n    memory_limit\
+        \ = \"64G\"\n    memory_limit_overwrite_max_allowed = \"64G\"\n\n    namespace\
         \ = \"pipeline\"\n    poll_timeout = 600  # ten minutes\n    service_account\
         \ = \"runner\"\n    [runners.kubernetes.pod_annotations]\n      \"gitlab/ci_pipeline_url\"\
         \ = \"$CI_PIPELINE_URL\"\n      \"gitlab/ci_job_url\" = \"$CI_JOB_URL\"\n\
@@ -45,14 +45,18 @@ spec:
         \ \"metrics/spack_job_spec_pkg_name\" = \"$SPACK_JOB_SPEC_PKG_NAME\"\n   \
         \   \"metrics/spack_spec_needs_rebuild\" = \"$SPACK_SPEC_NEEDS_REBUILD\"\n\
         \    [runners.kubernetes.node_selector]\n      \"kubernetes.io/arch\" = \"\
-        amd64\"\n      \"spack.io/node-pool\" = \"glr-large-pub\"\n"
+        amd64\"\n      \"spack.io/node-pool\" = \"glr-large-pub\"\n\n    [[runners.kubernetes.volumes.secret]]\n\
+        \      name = \"spack-intermediate-ci-signing-key\"\n      mount_path = \"\
+        /mnt/key/\"\n      read_only = true\n"
       helpers: {}
       image: busybox:1.32.0
       imagePullPolicy: if-not-present
-      locked: false
+      locked: true
+      protected: true
       runUntagged: false
-      secret: gitlab-gitlab-runner-secret
+      secret: spack-project-runner-registration-token
+      serviceAccountName: runner
       services: {}
-      tags: x86_64,x86_64_v2,x86_64_v3,x86_64_v4,avx,avx2,avx512,small,medium,large,huge,public,aws,spack
+      tags: x86_64,avx,avx2,avx512,small,medium,large,huge,protected,aws,spack
     terminationGracePeriodSeconds: 21600
     unregisterRunners: true

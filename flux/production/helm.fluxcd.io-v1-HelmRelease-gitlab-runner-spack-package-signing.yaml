@@ -1,0 +1,61 @@
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: runner-spack-package-signing
+  namespace: gitlab
+spec:
+  chart:
+    name: gitlab-runner
+    repository: https://charts.gitlab.io
+    version: 0.37.2
+  releaseName: spack-package-signing
+  values:
+    checkInterval: 30
+    concurrent: 1
+    gitlabUrl: https://gitlab.spack.io/
+    image: gitlab/gitlab-runner:alpine-v14.7.0
+    imagePullPolicy: IfNotPresent
+    metrics:
+      enabled: true
+    nodeSelector:
+      spack.io/node-pool: base
+    rbac:
+      serviceAccountName: runner
+    replicas: 1
+    runners:
+      config: "[[runners]]\n  output_limit = 8192\n  environment = [\"FF_GITLAB_REGISTRY_HELPER_IMAGE=1\"\
+        ]\n  [runners.kubernetes]\n    privileged = false\n    cpu_request = \"10\"\
+        \n    cpu_limit = \"10\"\n    memory_request = \"8G\"\n    memory_limit =\
+        \ \"64G\"\n    namespace = \"pipeline\"\n    poll_timeout = 600  # ten minutes\n\
+        \    service_account = \"notary\"\n\n    # TODO Change to actual image before\
+        \ merge\n    allowed_images = [\"ghcr.io/spack/notary:*\"]\n    allowed_services\
+        \ = [\"\"]\n\n    # TODO Set up security contexts with the image\n    # pod_security_context\
+        \ =\n    # helper_container_security_context =\n    # build_container_security_context\
+        \ =\n    #\n    # TODO what capabilities can we drop from the container?\n\
+        \    # cap_drop =\n    [runners.kubernetes.pod_annotations]\n      \"gitlab/ci_pipeline_url\"\
+        \ = \"$CI_PIPELINE_URL\"\n      \"gitlab/ci_job_url\" = \"$CI_JOB_URL\"\n\
+        \      \"gitlab/ci_project_url\" = \"$CI_PROJECT_URL\"\n      \"gitlab/ci_runner_description\"\
+        \ = \"$CI_RUNNER_DESCRIPTION\"\n      \"gitlab/ci_job_id\" = \"$CI_JOB_ID\"\
+        \n    [runners.kubernetes.pod_labels]\n      \"metrics/gitlab_ci_pipeline_id\"\
+        \ = \"$CI_PIPELINE_ID\"\n      \"metrics/gitlab_ci_project_namespace\" = \"\
+        $CI_PROJECT_NAMESPACE\"\n      \"metrics/gitlab_ci_project_name\" = \"$CI_PROJECT_NAME\"\
+        \n      \"metrics/gitlab_ci_job_stage\" = \"$CI_JOB_STAGE\"\n      \"metrics/gitlab_ci_commit_ref_name\"\
+        \ = \"$CI_COMMIT_REF_NAME\"\n      \"metrics/spack_ci_stack_name\" = \"$SPACK_CI_STACK_NAME\"\
+        \n    [runners.kubernetes.node_selector]\n      \"kubernetes.io/arch\" = \"\
+        amd64\"\n      \"spack.io/node-pool\" = \"glr-large-pub\"\n\n    [[runners.kubernetes.volumes.secret]]\n\
+        \      name = \"spack-signing-key-encrypted\"\n      mount_path = \"/mnt/keys/signing\"\
+        \n      read_only = true\n\n    [[runners.kubernetes.volumes.empty_dir]]\n\
+        \      name = \"gnupg\"\n      mount_path = \"/mnt/gnupg\"\n      medium =\
+        \ \"Memory\"\n"
+      helpers: {}
+      image: ghcr.io/spack/notary:latest
+      imagePullPolicy: always
+      locked: true
+      protected: true
+      runUntagged: false
+      secret: spack-signing-runner-secret
+      services: {}
+      tags: spack,notary,aws,protected
+    terminationGracePeriodSeconds: 21600
+    unregisterRunners: true
