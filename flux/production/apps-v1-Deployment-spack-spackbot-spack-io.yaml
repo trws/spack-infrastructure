@@ -20,7 +20,19 @@ spec:
         svc: web
     spec:
       containers:
-      - env:
+      - command:
+        - sh
+        - -c
+        - 'cd /app/spackbot
+
+          patch -p1 < /patch/patch
+
+          cd /
+
+          exec python3 -m spackbot
+
+          '
+        env:
         - name: PYTHONUNBUFFERED
           value: '1'
         - name: GITHUB_APP_IDENTIFIER
@@ -48,5 +60,12 @@ spec:
         ports:
         - containerPort: 8080
           name: http
+        volumeMounts:
+        - mountPath: /patch
+          name: patch
       nodeSelector:
         spack.io/node-pool: base
+      volumes:
+      - configMap:
+          name: spackbot-hotfix-patch
+        name: patch
