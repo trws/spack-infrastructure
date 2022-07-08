@@ -1,0 +1,147 @@
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: glt-psql
+spec:
+  releaseName: glt-psql
+  chart:
+    name: postgresql-ha
+    repository: https://charts.bitnami.com/bitnami
+    version: 9.1.2  # postgresql@14.3.0
+  values:
+    global:
+      postgresql:
+        existingSecret: glt
+      pgpool:
+        existingSecret: glt
+      storageClass: "gp3-small"
+
+    commonLabels:
+      spack.io/environment: testing
+      spack.io/release: gitlab
+      spack.io/app: postgresql
+
+    postgresql:
+      extendedConf: |-
+        password_encryption = md5
+      replicaCount: 3
+      updateStrategy:
+        type: RollingUpdate
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              spack.io/environment: testing
+              spack.io/release: gitlab
+              spack.io/app: postgresql
+      ## PostgreSQL containers' resource requests and limits
+      ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
+      ## We usually recommend not to specify default resources and to leave this as a conscious
+      ## choice for the user. This also increases chances charts run on environments with little
+      ## resources, such as Minikube. If you do want to specify resources, uncomment the following
+      ## lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+      ## @param postgresql.resources.limits The resources limits for the container
+      ## @param postgresql.resources.requests The requested resources for the container
+      ##
+      resources:
+        requests:
+          cpu: 300m
+          memory: 1.5G
+        limits:
+          cpu: 1500m
+          memory: 2.5G
+
+      labels:
+        spack.io/environment: testing
+        spack.io/release: gitlab
+        spack.io/app: postgresql
+
+      podLabels:
+        spack.io/environment: testing
+        spack.io/release: gitlab
+        spack.io/app: postgresql
+
+      nodeSelector:
+        spack.io/node-pool: gitlab
+
+      usePasswordFile: true
+      repmgrUsePassfile: true
+      syncReplication: true
+
+      # pgHbaConfiguration: |
+      #   host   all           repmgr    0.0.0.0/0   trust
+      #   host   repmgr        repmgr    0.0.0.0/0   trust
+      #   host   repmgr        repmgr    ::/0        trust
+      #   host   replication   repmgr    0.0.0.0/0   trust
+      #   host   replication   repmgr    ::/0        trust
+      #   host   all           all       0.0.0.0/0   trust
+      #   host   all           all       ::/0        trust
+      #   local  all           all                   trust
+      #   host   all           gitlab    0.0.0.0/0   md5
+      #   host   all           gitlab    ::/0        md5
+      #   host   all           all       0.0.0.0/0   scram-sha-256
+      #   host   all           all       ::/0        scram-sha-256
+
+    pgpool:
+      # NOTE(opadron): See https://github.com/bitnami/charts/issues/1741
+      #                for why there isn't a more straightforward way to handle
+      #                DB users.
+      initdbScriptsSecret: glt-psql-scripts
+      initdbScriptsCM: glt-psql-scripts
+      authenticationMethod: md5
+
+      nodeSelector:
+        spack.io/node-pool: gitlab
+
+      resources:
+        requests:
+           cpu: 250m
+           memory: 256Mi
+        limits:
+          cpu: 1000m
+          memory: 1G
+
+      labels:
+        spack.io/environment: testing
+        spack.io/release: gitlab
+        spack.io/app: postgresql
+
+      podLabels:
+        spack.io/environment: testing
+        spack.io/release: gitlab
+        spack.io/app: postgresql
+
+      serviceLabels:
+        spack.io/environment: testing
+        spack.io/release: gitlab
+        spack.io/app: postgresql
+
+    ## PostgreSQL Prometheus exporter parameters
+    ##
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        namespace: monitoring
+
+      labels:
+        spack.io/environment: testing
+        spack.io/release: gitlab
+        spack.io/app: postgresql
+
+    persistence:
+      enabled: true
+      storageClass: gp3-small
+      size: 8Gi
+
+    volumePermissions:
+      enabled: true
+
+    service:
+      type: ClusterIP
+      ports:
+        postgresql: 5432
+      portName: postgresql

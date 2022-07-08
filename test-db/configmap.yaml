@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: glt-psql-scripts
+data:
+  add-extra-users.sh: |
+    #! /bin/bash
+    USERS=($( cat /docker-entrypoint-initdb.d/secret/extra-users ))
+    for user in "${USERS[@]}"; do
+        IFS=':' read -r username pass64 <<< "$user"
+        pass="$( echo "$pass64" | base64 -d )"
+        /opt/bitnami/pgpool/bin/pg_md5 -m --config-file="/opt/bitnami/pgpool/conf/pgpool.conf" -u "${username}" "${pass}"
+    done

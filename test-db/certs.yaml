@@ -1,0 +1,38 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: glt-minio
+spec:
+  dnsNames:
+  - minio.glt.spack.io
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt
+  secretName: tls-gitlab-test-minio
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: gitlab-registry
+spec:
+  dnsNames:
+  - registry.gitlab-test.spack.io
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt
+  secretName: tls-gitlab-test-registry
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: gitlab-test-webservice
+spec:
+  dnsNames:
+  - gitlab-test.spack.io
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt
+  secretName: tls-gitlab-test-webservice
