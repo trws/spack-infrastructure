@@ -3,21 +3,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: spackbot-spack-io
-    svc: web
-  name: spackbot-spack-io
+    app: spackbot-workers
+    svc: workers
+  name: spackbot-workers
   namespace: spack
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: spackbot-spack-io
-      svc: web
+      app: spackbot-workers
+      svc: workers
   template:
     metadata:
       labels:
-        app: spackbot-spack-io
-        svc: web
+        app: spackbot-workers
+        svc: workers
     spec:
       containers:
       - env:
@@ -44,17 +44,23 @@ spec:
           valueFrom:
             secretKeyRef:
               key: github_private_key
-              name: spack-bot-credentials
+              name: spack-bot-dev-credentials
         - name: GITHUB_WEBHOOK_SECRET
           valueFrom:
             secretKeyRef:
               key: github_webhook_secret
-              name: spack-bot-credentials
-        image: ghcr.io/spack/spack-bot:latest
+              name: spack-bot-dev-credentials
+        image: ghcr.io/spack/spackbot-workers:latest
         imagePullPolicy: Always
-        name: web
-        ports:
-        - containerPort: 8080
-          name: http
+        name: worker
+        volumeMounts:
+        - mountPath: /git_rsa
+          name: spack-bot-idrsa
+          readOnly: true
       nodeSelector:
         spack.io/node-pool: base
+      volumes:
+      - name: spack-bot-idrsa
+        secret:
+          defaultMode: 384
+          secretName: spack-bot-idrsa
