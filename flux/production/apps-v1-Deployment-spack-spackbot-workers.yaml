@@ -44,12 +44,12 @@ spec:
           valueFrom:
             secretKeyRef:
               key: github_private_key
-              name: spack-bot-dev-credentials
+              name: spack-bot-credentials
         - name: GITHUB_WEBHOOK_SECRET
           valueFrom:
             secretKeyRef:
               key: github_webhook_secret
-              name: spack-bot-dev-credentials
+              name: spack-bot-credentials
         image: ghcr.io/spack/spackbot-workers:latest
         imagePullPolicy: Always
         name: worker
