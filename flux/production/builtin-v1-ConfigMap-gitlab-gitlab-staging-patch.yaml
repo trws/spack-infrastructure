@@ -12,26 +12,18 @@ data:
     \  value: registry.gitlab.{ENV}.spack.io\n- op: remove\n  path: /spec/values/global/hosts/ssh\n\
     - op: replace\n  path: /spec/values/global/email/from\n  value: admin@gitlab.{ENV}.spack.io\n\
     - op: replace\n  path: /spec/values/global/email/reply_to\n  value: noreply@gitlab.{ENV}.spack.io\n\
-    - op: remove\n  path: /spec/values/global/psql\n- op: remove\n  path: /spec/values/global/redis\n\
-    - op: remove\n  path: /spec/values/global/minio\n- op: remove\n  path: /spec/values/global/grafana\n\
-    - op: remove\n  path: /spec/values/global/appConfig\n- op: replace\n  path: /spec/values/minio/ingress/tls/secretName\n\
-    \  value: tls-gitlab-{ENV}-minio\n- op: replace\n  path: /spec/values/minio/persistence/size\n\
-    \  value: 10Gi\n- op: replace\n  path: /spec/values/registry/ingress/tls/secretName\n\
-    \  value: tls-gitlab-{ENV}-registry\n- op: add\n  path: /spec/values\n  value:\n\
-    \    grafana:\n      enabled: false\n- op: replace\n  path: /spec/values/gitlab/webservice/ingress/tls/secretName\n\
+    - op: remove\n  path: /spec/values/global/redis\n- op: remove\n  path: /spec/values/global/minio\n\
+    - op: remove\n  path: /spec/values/global/grafana\n- op: remove\n  path: /spec/values/global/appConfig\n\
+    - op: replace\n  path: /spec/values/minio/ingress/tls/secretName\n  value: tls-gitlab-{ENV}-minio\n\
+    - op: replace\n  path: /spec/values/minio/persistence/size\n  value: 10Gi\n- op:\
+    \ replace\n  path: /spec/values/registry/ingress/tls/secretName\n  value: tls-gitlab-{ENV}-registry\n\
+    - op: add\n  path: /spec/values\n  value:\n    grafana:\n      enabled: false\n\
+    - op: replace\n  path: /spec/values/gitlab/webservice/ingress/tls/secretName\n\
     \  value: tls-gitlab-{ENV}-webservice\n- op: replace\n  path: /spec/values/gitlab/webservice/minReplicas\n\
     \  value: 1\n- op: replace\n  path: /spec/values/gitlab/webservice/maxReplicas\n\
     \  value: 3\n- op: remove\n  path: /spec/values/gitlab/gitlab-shell/service\n\
-    - op: replace\n  path: /spec/values/postgresql/persistence/size\n  value: 8Gi\n\
-    - op: replace\n  path: /spec/values/postgresql/persistence/storageClass\n  value:\
-    \ gp3-small\n- op: replace\n  path: /spec/values/postgresql/master/podLabels/spack.io~1environment\n\
-    \  value: \"{ENV}\"\n- op: replace\n  path: \"\\\n     /spec/values/postgresql/master/affinity/podAntiAffinity\\\
-    \n     /requiredDuringSchedulingIgnoredDuringExecution/0/labelSelector\\\n   \
-    \  /matchExpressions/0/values/0\"\n  value: \"{ENV}\"\n- op: replace\n  path:\
-    \ /spec/values/postgresql/slave/podLabels/spack.io~1environment\n  value: \"{ENV}\"\
-    \n- op: replace\n  path: \"\\\n     /spec/values/postgresql/slave/affinity/podAntiAffinity\\\
-    \n     /requiredDuringSchedulingIgnoredDuringExecution/0/labelSelector\\\n   \
-    \  /matchExpressions/0/values/0\"\n  value: \"{ENV}\"\n"
+    - op: replace\n  path: /spec/valuesFrom/0/secretKeyRef/name\n  value: gitlab-{ENV}-secrets\n\
+    - op: replace\n  path: /spec/values/global/psql/password/secret\n  value: gitlab-{ENV}-secrets\n"
 kind: ConfigMap
 metadata:
   annotations:

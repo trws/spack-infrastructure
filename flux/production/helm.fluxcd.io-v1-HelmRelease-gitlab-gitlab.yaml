@@ -109,7 +109,12 @@ spec:
         enabled: false
       psql:
         connectTimeout: null
-        password: {}
+        database: gitlabhq_production
+        password:
+          key: postgres-password
+          secret: gitlab-secrets
+        port: 5432
+        username: gitlab
       redis:
         password:
           enabled: true
@@ -134,65 +139,7 @@ spec:
     nodeSelector:
       spack.io/node-pool: gitlab
     postgresql:
-      master:
-        affinity:
-          podAntiAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                - key: spack.io/environment
-                  operator: In
-                  values:
-                  - production
-                - key: spack.io/release
-                  operator: In
-                  values:
-                  - gitlab
-                - key: spack.io/app
-                  operator: In
-                  values:
-                  - postgresql
-              topologyKey: kubernetes.io/hostname
-        nodeSelector:
-          spack.io/node-pool: gitlab
-        podLabels:
-          spack.io/app: postgresql
-          spack.io/environment: production
-          spack.io/release: gitlab
-      persistence:
-        size: 100Gi
-        storageClass: gp3
-      replication:
-        enabled: true
-        slaveReplicas: 4
-        synchronousCommit: 'on'
-      shmVolume:
-        enabled: true
-      slave:
-        affinity:
-          podAntiAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                - key: spack.io/environment
-                  operator: In
-                  values:
-                  - production
-                - key: spack.io/release
-                  operator: In
-                  values:
-                  - gitlab
-                - key: spack.io/app
-                  operator: In
-                  values:
-                  - postgresql
-              topologyKey: kubernetes.io/hostname
-        nodeSelector:
-          spack.io/node-pool: gitlab
-        podLabels:
-          spack.io/app: postgresql
-          spack.io/environment: production
-          spack.io/release: gitlab
+      install: false
     prometheus:
       install: false
     registry:
@@ -201,3 +148,9 @@ spec:
           secretName: tls-gitlab-registry
       nodeSelector:
         spack.io/node-pool: gitlab
+  valuesFrom:
+  - secretKeyRef:
+      key: values.yaml
+      name: gitlab-secrets
+      namespace: gitlab
+      optional: false
