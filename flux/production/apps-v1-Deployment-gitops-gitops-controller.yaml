@@ -47,6 +47,10 @@ spec:
         - /storage
         image: ghcr.io/spack/gitops:0.0.4
         name: controller
+        resources:
+          requests:
+            cpu: 250m
+            memory: 50M
         volumeMounts:
         - mountPath: /storage
           name: storage

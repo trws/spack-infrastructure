@@ -98,6 +98,10 @@ spec:
         ports:
         - containerPort: 80
           name: web
+        resources:
+          requests:
+            cpu: 1600m
+            memory: 1G
       nodeSelector:
         spack.io/node-pool: base
       restartPolicy: Always

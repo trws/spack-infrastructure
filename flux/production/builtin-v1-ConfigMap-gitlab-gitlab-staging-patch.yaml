@@ -21,9 +21,35 @@ data:
     - op: replace\n  path: /spec/values/gitlab/webservice/ingress/tls/secretName\n\
     \  value: tls-gitlab-{ENV}-webservice\n- op: replace\n  path: /spec/values/gitlab/webservice/minReplicas\n\
     \  value: 1\n- op: replace\n  path: /spec/values/gitlab/webservice/maxReplicas\n\
-    \  value: 3\n- op: remove\n  path: /spec/values/gitlab/gitlab-shell/service\n\
-    - op: replace\n  path: /spec/valuesFrom/0/secretKeyRef/name\n  value: gitlab-{ENV}-secrets\n\
-    - op: replace\n  path: /spec/values/global/psql/password/secret\n  value: gitlab-{ENV}-secrets\n"
+    \  value: 3\n- op: replace\n  path: /spec/values/gitlab/webservice/resources/requests/cpu\n\
+    \  value: 550m\n- op: replace\n  path: /spec/values/gitlab/webservice/resources/requests/memory\n\
+    \  value: 2G\n- op: remove\n  path: /spec/values/gitlab/gitlab-shell/service\n\
+    - op: remove\n  path: /spec/valuesFrom/0/secretKeyRef\n- op: remove\n  path: /spec/values/global/psql/port\n\
+    - op: remove\n  path: /spec/values/global/psql/database\n- op: remove\n  path:\
+    \ /spec/values/global/psql/username\n- op: replace\n  path: /spec/values/global/psql/password\n\
+    \  value: {}\n- op: replace\n  path: /spec/values/postgresql\n  value:\n    install:\
+    \ true\n    replication:\n      enabled: true\n      slaveReplicas: 4\n      synchronousCommit:\
+    \ \"on\"\n    shmVolume:\n      enabled: true\n    master:\n      podLabels:\n\
+    \        spack.io/environment: \"{ENV}\"\n        spack.io/release: \"gitlab\"\
+    \n        spack.io/app: \"postgresql\"\n      affinity:\n        podAntiAffinity:\n\
+    \          requiredDuringSchedulingIgnoredDuringExecution:\n            - topologyKey:\
+    \ \"kubernetes.io/hostname\"\n              labelSelector:\n                matchExpressions:\n\
+    \                  - key: \"spack.io/environment\"\n                    operator:\
+    \ In\n                    values: [\"{ENV}\"]\n                  - key: \"spack.io/release\"\
+    \n                    operator: In\n                    values: [gitlab]\n   \
+    \               - key: \"spack.io/app\"\n                    operator: In\n  \
+    \                  values: [postgresql]\n      nodeSelector:\n        spack.io/node-pool:\
+    \ gitlab\n    slave:\n      podLabels:\n        spack.io/environment: \"{ENV}\"\
+    \n        spack.io/release: gitlab\n        spack.io/app: postgresql\n      affinity:\n\
+    \        podAntiAffinity:\n          requiredDuringSchedulingIgnoredDuringExecution:\n\
+    \            - topologyKey: \"kubernetes.io/hostname\"\n              labelSelector:\n\
+    \                matchExpressions:\n                  - key: spack.io/environment\n\
+    \                    operator: In\n                    values: [\"{ENV}\"]\n \
+    \                 - key: spack.io/release\n                    operator: In\n\
+    \                    values: [gitlab]\n                  - key: spack.io/app\n\
+    \                    operator: In\n                    values: [postgresql]\n\
+    \      nodeSelector:\n        spack.io/node-pool: gitlab\n    persistence:\n \
+    \     storageClass: gp3\n      size: 100Gi\n"
 kind: ConfigMap
 metadata:
   annotations:

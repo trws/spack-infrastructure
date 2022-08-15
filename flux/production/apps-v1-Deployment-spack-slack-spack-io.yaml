@@ -50,5 +50,9 @@ spec:
         ports:
         - containerPort: 80
           name: http
+        resources:
+          requests:
+            cpu: 20m
+            memory: 65M
       nodeSelector:
         spack.io/node-pool: base

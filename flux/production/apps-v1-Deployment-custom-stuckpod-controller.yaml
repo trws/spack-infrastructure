@@ -20,6 +20,10 @@ spec:
       - image: ghcr.io/spack/stuckpods:0.0.1
         imagePullPolicy: Always
         name: deletor
+        resources:
+          requests:
+            cpu: 25m
+            memory: 50M
       nodeSelector:
         spack.io/node-pool: base
       serviceAccountName: stuckpod-controller

@@ -55,6 +55,10 @@ spec:
         image: ghcr.io/spack/spackbot-workers:latest
         imagePullPolicy: Always
         name: worker
+        resources:
+          requests:
+            cpu: 900m
+            memory: 1G
         volumeMounts:
         - mountPath: /git_rsa
           name: spack-bot-dev-idrsa

@@ -76,6 +76,10 @@ spec:
         externalUrl: https://prometheus.spack.io
         nodeSelector:
           spack.io/node-pool: beefy
+        resources:
+          requests:
+            cpu: 2000m
+            memory: 50G
         storageSpec:
           volumeClaimTemplate:
             spec:
@@ -85,3 +89,8 @@ spec:
                 requests:
                   storage: 200Gi
               storageClassName: gp2
+    prometheusOperator:
+      resources:
+        requests:
+          cpu: 750m
+          memory: 300M

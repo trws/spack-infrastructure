@@ -26,5 +26,9 @@ spec:
     nodeSelector:
       spack.io/node-pool: base
     replicaCount: 3
+    resources:
+      requests:
+        cpu: 100m
+        memory: 800M
     serviceMonitor:
       enabled: false

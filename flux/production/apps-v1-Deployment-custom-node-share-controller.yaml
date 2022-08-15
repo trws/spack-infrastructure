@@ -23,6 +23,10 @@ spec:
         image: alpine:3.12
         imagePullPolicy: IfNotPresent
         name: main
+        resources:
+          requests:
+            cpu: 150m
+            memory: 100M
         volumeMounts:
         - mountPath: /script
           name: script

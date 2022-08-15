@@ -16,6 +16,9 @@ spec:
       nodeSelector:
         spack.io/node-pool: base
       replicaCount: 3
+      requests:
+        cpu: 30m
+        memory: 200M
     extraArgs:
     - --enable-certificate-owner-ref=true
     installCRDs: false
@@ -24,7 +27,15 @@ spec:
     prometheus:
       enabled: false
     replicaCount: 3
+    resources:
+      requests:
+        cpu: 50m
+        memory: 300M
     webhook:
       nodeSelector:
         spack.io/node-pool: base
       replicaCount: 3
+      resources:
+        requests:
+          cpu: 300m
+          memory: 50M
