@@ -27,6 +27,8 @@ spec:
           value: pr-binary-graduation-task-queue.cev8lh.ng.0001.use1.cache.amazonaws.com
         - name: REDIS_PORT
           value: '6379'
+        - name: TASK_QUEUE_NAME
+          value: tasksdevelop
         - name: WORKER_JOB_TIMEOUT
           value: '600'
         - name: PYTHONUNBUFFERED
